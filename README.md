@@ -29,9 +29,10 @@ O projeto consiste em um sistema Web em **Java**, utilizando a arquitetura **MVC
 <img width="600px" src="./imagens/diagrama_casos_uso.png"/> 
 *Modelagem inicial das interações entre Clientes, Agentes e o Sistema*
 
-**Diagrama de Classes**
-<img width="600px" src="./imagens/diagrama_classes.png"/> 
-*Estrutura lógica do sistema contendo as entidades de Automóvel, Cliente, Agentes e Contratos*
+### Diagrama de Classes
+<br>
+<img width="600px" src="docs/images/diagrama_classes.png"/> 
+<br>
 
 ### Diagrama de Pacotes (Visão Lógica)
 <br>
