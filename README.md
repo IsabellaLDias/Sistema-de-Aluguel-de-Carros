@@ -25,9 +25,11 @@ O projeto consiste em um sistema Web em **Java**, utilizando a arquitetura **MVC
 
 ## Diagramas
 
-**Diagrama de Casos de Uso**
-<img width="600px" src="./imagens/diagrama_casos_uso.png"/> 
-*Modelagem inicial das interações entre Clientes, Agentes e o Sistema*
+### Diagrama de Casos de Uso
+<br>
+<img width="600px" src="docs/images/Diagram de caso de uso.png"/> 
+<br>
+
 
 ### Diagrama de Classes
 <br>
