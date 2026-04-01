@@ -56,7 +56,7 @@ O projeto consiste em um sistema Web em **Java**, utilizando a arquitetura **MVC
 
 ### Diagrama de Pacotes (Visão Lógica)
 <br>
-<img width="600px" src="./docs/images/Sistema de Aluguel de Carros - Diagrama de Pacotes.drawio.png"/>
+<img width="900px" src="./docs/images/Diagrama de Pacotes.png"/>
 <br>
 
 ---
