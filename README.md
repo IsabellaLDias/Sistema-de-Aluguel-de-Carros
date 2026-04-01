@@ -23,6 +23,24 @@ O projeto consiste em um sistema Web em **Java**, utilizando a arquitetura **MVC
 **UC06 - Consultar Dados do Contratante**
 * Como um agente, eu desejo consultar o RG, CPF, Nome, Endereço, profissão e rendimentos do contratante, para realizar a análise de crédito.
 
+**US07 - Autenticação de Usuário:** 
+* Como um usuário cadastrado, desejo realizar login no sistema para acessar as funcionalidades restritas ao meu perfil.
+  
+**US08 - Gestão de Rendimentos:** 
+* Como um cliente, desejo cadastrar até 3 fontes de rendimentos e informações empregatícias para subsidiar a análise de crédito.
+
+**US09 - Notificação de Alteração:** 
+* Como um cliente, desejo ser notificado quando um agente modificar meu pedido de aluguel para que eu possa validar as novas condições.
+  
+**US10 - Registro de Parecer Financeiro:** 
+* Como um agente, desejo emitir um parecer positivo ou negativo sobre um pedido para que o sistema avance para a fase de execução de contrato.
+  
+**US11 - Definição de Propriedade:** 
+* Como um agente, desejo registrar se o veículo será propriedade do cliente, empresa ou banco no contrato, dependendo da modalidade escolhida.
+  
+**US12 - Visualização de Status:** 
+* Como um cliente, desejo visualizar o status atual do meu pedido (em análise, aprovado, aguardando contrato) para acompanhar o processo via internet.
+
 ## Diagramas
 
 ### Diagrama de Casos de Uso
