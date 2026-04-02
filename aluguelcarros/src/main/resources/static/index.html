@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Aluguel de Carros</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🚗 Sistema de Aluguel</h1>
+
+    <div class="card">
+        <h2>Criar Pedido</h2>
+
+        <input id="clienteId" placeholder="ID do Cliente">
+        <input id="prazo" placeholder="Prazo (meses)">
+        <input id="valor" placeholder="Valor previsto">
+
+        <button onclick="criarPedido()">Criar Pedido</button>
+    </div>
+
+    <div class="card">
+        <h2>Pedidos</h2>
+        <button onclick="listarPedidos()">Atualizar</button>
+
+        <ul id="lista"></ul>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
