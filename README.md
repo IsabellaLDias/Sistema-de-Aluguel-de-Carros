@@ -49,20 +49,24 @@
 ---
 
 ## 📝 Sobre o Projeto
-O Sistema de Aluguel de Carros é uma plataforma Full-Stack desenvolvida para atuar como um painel de autoatendimento para clientes de locadoras de veículos.
+
+O **Sistema de Aluguel de Carros** é uma aplicação web Full-Stack projetada para atuar como um portal de autoatendimento ágil e intuitivo para clientes de locadoras de veículos.
 
 - **Por que ele existe:**
-  O projeto nasceu da necessidade de modernizar a gestão de pedidos de aluguel. Sistemas manuais ou legados são lentos; nossa solução traz o poder do Spring Boot e do JavaScript moderno para a palma da mão do usuário.
+  Surgiu da necessidade de modernizar o fluxo de pedidos de locação. Substituindo processos manuais e burocráticos, a aplicação utiliza arquitetura moderna para entregar uma experiência fluida e acessível diretamente do navegador do usuário.
+
 - **Qual problema ele resolve:**
-  O sistema resolve a dificuldade de acompanhamento e registro de locações, reunindo em um único lugar:
-  - Cadastro independente de clientes com geração automática de IDs.
-  - Acompanhamento de pedidos ativos, concluídos ou cancelados.
-  - Total controle dos próprios dados (alteração e exclusão de conta).  
+  O sistema elimina a lentidão e a desorganização no acompanhamento e registro de locações, centralizando toda a operação em um único painel. Ele garante:
+  - **Autonomia de Cadastro:** Criação de contas independentes para clientes, com geração automática e segura de IDs.
+  - **Gestão Transparente:** Painel dinâmico para acompanhamento em tempo real do status dos pedidos (pendentes, ativos, concluídos ou cancelados).
+  - **Controle de Dados:** Área de perfil dedicada com CRUD completo, permitindo ao usuário atualizar suas informações ou excluir sua conta de forma permanente.  
+
 - **Qual o contexto:**
-  Este projeto foi desenvolvido dentro do contexto acadêmico, aplicando conceitos de migração de frameworks (Micronaut para Spring Boot), arquitetura de sistemas baseada em API REST e integração com Front-end Vanilla (SPA). 
-- **Onde ele pode ser utilizado**
-  - **Locadoras de Veículos:** Como portal do cliente para registro e simulação de contratos de locação.
-  - **Portfólio Acadêmico:** Demonstração prática da aplicação de engenharia de software (Back-end e Front-end).
+  Desenvolvido em um ambiente acadêmico, o projeto tem como foco a aplicação de boas práticas de Engenharia de Software. Ele explora o desenvolvimento de uma **API RESTful** robusta em Java com Spring Boot, e sua integração fluida com uma interface Front-end construída sob os conceitos de *Single Page Application* (SPA) utilizando Vanilla JavaScript.
+
+- **Onde ele pode ser utilizado:**
+  - **Locadoras de Veículos:** Como portal do cliente para o registro rápido, controle e simulação de contratos de locação.
+  - **Portfólio Profissional/Acadêmico:** Como um *case* de estudo prático que demonstra domínio no desenvolvimento Full-Stack e integração entre sistemas.
 
 ---
 
