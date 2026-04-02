@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aluguel de Carros</title>
+    <title>Aluguel de Carros - Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,44 +41,85 @@
             <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
         </div>
 
-        <button class="btn btn-create" onclick="cadastrarEEntrar()">Cadastrar e Acessar</button>
+        <button class="btn btn-primary btn-full" onclick="cadastrarEEntrar()">Cadastrar e Acessar</button>
     </div>
 
     <div id="tela-principal" class="hidden">
 
         <header class="dashboard-header">
             <div>
-                <h1>🚖 Sistema de Aluguel</h1>
+                <h1>Sistema de Aluguel</h1>
                 <p>Olá, <strong id="userNameDisplay"></strong>!</p>
             </div>
-            <button class="btn-logout" onclick="sairSistema()">Sair</button>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="abrirPerfil()">Meu Perfil</button>
+                <button class="btn-logout" onclick="sairSistema()">Sair</button>
+            </div>
         </header>
 
-        <div class="content">
+        <div id="dashboard-content" class="content">
             <div class="card">
                 <h2>Novo Pedido</h2>
-
                 <div class="form-group">
                     <label for="prazo">Prazo (meses)</label>
                     <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
                 </div>
-
                 <div class="form-group">
                     <label for="valor">Valor Previsto (R$)</label>
                     <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
                 </div>
-
-                <button class="btn btn-create" onclick="criarPedido()">Criar Pedido</button>
+                <button class="btn btn-primary btn-full" onclick="criarPedido()">Criar Pedido</button>
             </div>
 
             <div class="card">
                 <div class="card-header">
                     <h2>Meus Pedidos</h2>
-                    <button class="btn btn-refresh" onclick="listarPedidos()">Atualizar</button>
+                    <button class="btn btn-secondary btn-sm" onclick="listarPedidos()">Atualizar Lista</button>
                 </div>
                 <div id="lista"></div>
             </div>
         </div>
+
+        <div id="tela-perfil" class="hidden">
+            <div class="card card-profile">
+                <div class="card-header">
+                    <h2>Meus Dados</h2>
+                    <button class="btn btn-secondary btn-sm" onclick="voltarDashboard()">Voltar</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="editNome">Nome Completo</label>
+                    <input type="text" id="editNome">
+                </div>
+
+                <div class="form-group row-2">
+                    <div class="form-group">
+                        <label for="editCpf">CPF</label>
+                        <input type="text" id="editCpf">
+                    </div>
+                    <div class="form-group">
+                        <label for="editRg">RG</label>
+                        <input type="text" id="editRg">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editEndereco">Endereço</label>
+                    <input type="text" id="editEndereco">
+                </div>
+
+                <div class="form-group">
+                    <label for="editProfissao">Profissão</label>
+                    <input type="text" id="editProfissao">
+                </div>
+
+                <div class="profile-actions">
+                    <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar</button>
+                    <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha Conta</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
