@@ -2,32 +2,48 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aluguel de Carros</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
+    <header>
+        <h1>🚖 Sistema de Aluguel</h1>
+        <p>Gerencie pedidos de aluguel de forma simples e eficiente</p>
+    </header>
 
-    <h1>🚗 Sistema de Aluguel</h1>
+    <div class="content">
+        <div class="card">
+            <h2>Criar Pedido</h2>
 
-    <div class="card">
-        <h2>Criar Pedido</h2>
+            <div class="form-group">
+                <label for="clienteId">ID do Cliente</label>
+                <input type="number" id="clienteId" placeholder="Digite o ID do cliente" min="1">
+            </div>
 
-        <input id="clienteId" placeholder="ID do Cliente">
-        <input id="prazo" placeholder="Prazo (meses)">
-        <input id="valor" placeholder="Valor previsto">
+            <div class="form-group">
+                <label for="prazo">Prazo (meses)</label>
+                <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
+            </div>
 
-        <button onclick="criarPedido()">Criar Pedido</button>
+            <div class="form-group">
+                <label for="valor">Valor Previsto</label>
+                <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
+            </div>
+
+            <button class="btn btn-create" onclick="criarPedido()">Criar Pedido</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Pedidos</h2>
+                <button class="btn btn-refresh" onclick="listarPedidos()">Atualizar</button>
+            </div>
+            <ul id="lista"></ul>
+        </div>
     </div>
-
-    <div class="card">
-        <h2>Pedidos</h2>
-        <button onclick="listarPedidos()">Atualizar</button>
-
-        <ul id="lista"></ul>
-    </div>
-
 </div>
 
 <script src="script.js"></script>

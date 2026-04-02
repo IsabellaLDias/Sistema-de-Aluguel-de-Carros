@@ -46,6 +46,7 @@ public class PedidoAluguelService {
         p.setClienteId(dto.clienteId);
         p.setPrazoMeses(dto.prazoMeses);
         p.setValorPrevisto(dto.valorPrevisto);
+        p.setStatus(String.valueOf(dto.status));
 
         return p;
     }
