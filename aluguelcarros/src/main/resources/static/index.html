@@ -9,39 +9,75 @@
 <body>
 
 <div class="container">
-    <header>
-        <h1>🚖 Sistema de Aluguel</h1>
-        <p>Gerencie pedidos de aluguel de forma simples e eficiente</p>
-    </header>
 
-    <div class="content">
-        <div class="card">
-            <h2>Criar Pedido</h2>
-
-            <div class="form-group">
-                <label for="clienteId">ID do Cliente</label>
-                <input type="number" id="clienteId" placeholder="Digite o ID do cliente" min="1">
-            </div>
-
-            <div class="form-group">
-                <label for="prazo">Prazo (meses)</label>
-                <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
-            </div>
-
-            <div class="form-group">
-                <label for="valor">Valor Previsto</label>
-                <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
-            </div>
-
-            <button class="btn btn-create" onclick="criarPedido()">Criar Pedido</button>
+    <div id="tela-login" class="card login-card">
+        <div class="login-card-header">
+            <h1>Cadastro</h1>
+            <p>Cadastre-se para começar a alugar</p>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h2>Pedidos</h2>
-                <button class="btn btn-refresh" onclick="listarPedidos()">Atualizar</button>
+        <div class="form-group">
+            <label for="regNome">Nome Completo</label>
+            <input type="text" id="regNome" placeholder="Ex: João Silva">
+        </div>
+
+        <div class="form-group">
+            <label for="regCpf">CPF</label>
+            <input type="text" id="regCpf" placeholder="Apenas números">
+        </div>
+
+        <div class="form-group">
+            <label for="regRg">RG</label>
+            <input type="text" id="regRg" placeholder="Apenas números">
+        </div>
+
+        <div class="form-group">
+            <label for="regEndereco">Endereço</label>
+            <input type="text" id="regEndereco" placeholder="Rua, Número, Bairro">
+        </div>
+
+        <div class="form-group">
+            <label for="regProfissao">Profissão</label>
+            <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
+        </div>
+
+        <button class="btn btn-create" onclick="cadastrarEEntrar()">Cadastrar e Acessar</button>
+    </div>
+
+    <div id="tela-principal" class="hidden">
+
+        <header class="dashboard-header">
+            <div>
+                <h1>🚖 Sistema de Aluguel</h1>
+                <p>Olá, <strong id="userNameDisplay"></strong>!</p>
             </div>
-            <ul id="lista"></ul>
+            <button class="btn-logout" onclick="sairSistema()">Sair</button>
+        </header>
+
+        <div class="content">
+            <div class="card">
+                <h2>Novo Pedido</h2>
+
+                <div class="form-group">
+                    <label for="prazo">Prazo (meses)</label>
+                    <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="valor">Valor Previsto (R$)</label>
+                    <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
+                </div>
+
+                <button class="btn btn-create" onclick="criarPedido()">Criar Pedido</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Meus Pedidos</h2>
+                    <button class="btn btn-refresh" onclick="listarPedidos()">Atualizar</button>
+                </div>
+                <div id="lista"></div>
+            </div>
         </div>
     </div>
 </div>
