@@ -219,6 +219,10 @@ A organização do projeto segue a arquitetura padrão do Spring Boot, onde a AP
 <img width="900px" src="./docs/images/Diagrama de Pacotes.png"/>
 <br>
 
+### Diagrama de Componentes 
+<br>
+<img width="900px" src="./docs/images/Diagrama de componentes.png"/>
+<br>
 ---
 
 ## 🔗 Documentações utilizadas
