@@ -14,6 +14,7 @@ public class Cliente {
     private String rg;
     private String endereco;
     private String profissao;
+    
 
     public Long getId() {
         return id;
