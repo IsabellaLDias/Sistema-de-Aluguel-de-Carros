@@ -205,7 +205,7 @@ A organização do projeto segue a arquitetura padrão do Spring Boot, onde a AP
 
 ### Diagrama de Casos de Uso
 <br>
-<img width="600px" src="docs/images/Diagram de caso de uso.png"/> 
+<img width="600px" src="docs/images/Diagrama de Casos de Uso.png"/> 
 <br>
 
 
