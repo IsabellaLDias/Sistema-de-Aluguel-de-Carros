@@ -26,7 +26,7 @@
 
 ## 🚧 Status do Projeto
 
-[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue?style=for-the-badge)](https://github.com/IsabellaLDias/Aluguel-Carros/releases) ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![GitHub license](https://img.shields.io/github/license/IsabellaLDias/Aluguel-Carros?style=for-the-badge&color=007ec6&logo=opensourceinitiative)
+[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue?style=for-the-badge)](https://github.com/IsabellaLDias/Aluguel-Carros/releases) ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white) ![Micronaut](https://img.shields.io/badge/Micronaut-1B1F23?style=for-the-badge&logo=micronaut&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![GitHub license](https://img.shields.io/github/license/IsabellaLDias/Aluguel-Carros?style=for-the-badge&color=007ec6&logo=opensourceinitiative)
 
 ---
 
@@ -37,6 +37,7 @@
 - [Instalação e Execução](#-instalação-e-execução)
   - [Pré-requisitos](#pré-requisitos)
   - [Instalação de Dependências e Como Executar a Aplicação](#-instalação-e-execução)
+  - [H2 Console](#-h2-console)
 - [Estrutura de Pastas](#-estrutura-de-pastas)
 - [User Stories](#-user-stories)
 - [Diagramas](#-diagramas)
@@ -62,7 +63,7 @@ O **Sistema de Aluguel de Carros** é uma aplicação web Full-Stack projetada p
   - **Controle de Dados:** Área de perfil dedicada com CRUD completo, permitindo ao usuário atualizar suas informações ou excluir sua conta de forma permanente.  
 
 - **Qual o contexto:**
-  Desenvolvido em um ambiente acadêmico, o projeto tem como foco a aplicação de boas práticas de Engenharia de Software. Ele explora o desenvolvimento de uma **API RESTful** robusta em Java com Spring Boot, e sua integração fluida com uma interface Front-end construída sob os conceitos de *Single Page Application* (SPA) utilizando Vanilla JavaScript.
+  Desenvolvido em um ambiente acadêmico, o projeto tem como foco a aplicação de boas práticas de Engenharia de Software. Ele explora o desenvolvimento de uma **API RESTful** robusta em Java com Micronaut, e sua integração fluida com uma interface Front-end construída sob os conceitos de *Single Page Application* (SPA) utilizando Vanilla JavaScript.
 
 - **Onde ele pode ser utilizado:**
   - **Locadoras de Veículos:** Como portal do cliente para o registro rápido, controle e simulação de contratos de locação.
@@ -76,7 +77,7 @@ O **Sistema de Aluguel de Carros** é uma aplicação web Full-Stack projetada p
 - 🚗 **Dashboard de Pedidos:** Espaço dedicado para a criação rápida de pedidos, definindo prazo em meses e valor previsto.
 - 🔒 **Isolamento de Dados:** O sistema identifica o usuário da "sessão" atual e lista apenas os pedidos de aluguel atrelados a ele.
 - 📱 **Design Moderno e Responsivo:** Interface limpa estilo SaaS (*Software as a Service*), baseada em *Glassmorphism* leve, variáveis CSS modernas e componentes padronizados.
-- ⚙️ **API RESTful:** Back-end robusto em Java com Spring Boot, tratando requisições, erros de conversão (Enums) e CORS de forma profissional.
+- ⚙️ **API RESTful:** Back-end robusto em Java com Micronaut, tratando requisições e regras de negócio de forma profissional.
 
 ---
 
@@ -95,10 +96,11 @@ As seguintes tecnologias foram utilizadas no desenvolvimento do sistema, com foc
 ### 🖥️ Back-end
 
 - **Linguagem:** Java 17+
-- **Framework Principal:** Spring Boot 3
+- **Framework Principal:** Micronaut 4
 - **Ferramentas e Bibliotecas:**
-  - Spring Web (Criação da API REST)
-  - Lombok (Redução de código boilerplate/DTOs)
+  - Micronaut HTTP Server (Criação da API REST)
+  - Micronaut Data + Hibernate JPA
+  - H2 Database
 - **Gerenciador de Dependências:** Gradle
 
 ---
@@ -119,20 +121,37 @@ Antes de iniciar, certifique-se de que o ambiente possua:
 ### 📦 Instalação de Dependências e Como Executar a Aplicação
 1. Clone o repositório para sua máquina local.
 2. Abra a pasta principal do projeto na sua IDE (ex: IntelliJ IDEA).
-3. O Gradle irá sincronizar e baixar as dependências do Spring Boot automaticamente.
-4. Navegue até `src/main/java/com/aluguelcarros` e execute a classe `AluguelcarrosApplication.java`.
-5. A API e os arquivos estáticos estarão rodando simultaneamente.
-6. Acesse no seu navegador: `http://localhost:8080` (O Spring Boot servirá o `index.html` da pasta `static` automaticamente).
+3. Entre na pasta do projeto Micronaut:
+   - `cd micronaut`
+4. O Gradle irá sincronizar e baixar as dependências automaticamente.
+5. Execute a aplicação:
+   - Windows: `.\gradlew.bat run`
+   - Linux/macOS: `./gradlew run`
+6. A API e os arquivos estáticos estarão rodando simultaneamente.
+7. Acesse no navegador:
+   - Aplicação: `http://localhost:8080`
+   - `index.html`: `http://localhost:8080/index.html`
+
+### 🗄 H2 Console
+
+O projeto usa H2 para persistência local no ambiente de desenvolvimento.
+
+- URL do console: `http://localhost:8082`
+- JDBC URL: `jdbc:h2:file:./data/aluguelcarros_micronaut`
+- Usuário: `sa`
+- Senha: *(vazia)*
+
+Se o console não abrir, verifique se a porta `8082` já está sendo usada por outro processo.
 
 ---
 
 ## 📂 Estrutura de Pastas
 
-A organização do projeto segue a arquitetura padrão do Spring Boot, onde a API e o Front-end estático convivem no mesmo projeto, facilitando a execução.
+A organização do projeto segue a arquitetura do Micronaut, onde a API e o Front-end estático convivem no mesmo projeto, facilitando a execução.
 
 ```
 .
-├── aluguelcarros/                    # 📁 Diretório principal do projeto
+├── micronaut/                        # 📁 Diretório principal do projeto
 │   ├── .gradle/                      # 📦 Arquivos internos do Gradle
 │   ├── build/                        # 🔨 Arquivos gerados no build
 │   ├── gradle/                       # ⚙️ Wrapper do Gradle
@@ -149,14 +168,14 @@ A organização do projeto segue a arquitetura padrão do Spring Boot, onde a AP
 │   │   │   │   ├── security/         # 🔒 Filtros e configurações de segurança
 │   │   │   │   ├── service/          # 🧠 Lógica de negócios
 │   │   │   │   ├── view/             # 🖥️ Classes de representação
-│   │   │   │   └── AluguelcarrosApplication.java # 🚀 Classe principal do Spring Boot
+│   │   │   │   └── Application.java      # 🚀 Classe principal do Micronaut
 │   │   │   └── resources/            # 🌐 Arquivos estáticos e configurações
 │   │   │       ├── static/           # 🎨 Front-end Vanilla (HTML, CSS, JS)
 │   │   │       │   ├── index.html
 │   │   │       │   ├── script.js
 │   │   │       │   └── style.css
 │   │   │       ├── templates/        # 📄 Arquivos de templates
-│   │   │       └── application.properties # 🔧 Propriedades de configuração do Spring
+│   │   │       └── application.properties # 🔧 Propriedades de configuração do Micronaut
 │   │   └── test/                     # 🧪 Testes unitários e de integração
 ```
 ---
@@ -230,8 +249,9 @@ A organização do projeto segue a arquitetura padrão do Spring Boot, onde a AP
 Esta seção reúne as principais documentações técnicas e referências que serviram de apoio durante o desenvolvimento do Sistema de Aluguel de Carros, auxiliando na implementação, organização do projeto e boas práticas.
 
 * 📖 **Framework/Biblioteca (Back-end):**
-  * [Documentação Oficial do **Spring Boot**](https://spring.io/projects/spring-boot)
-  * [Documentação Oficial do **Project Lombok**](https://projectlombok.org/features/)
+  * [Documentação Oficial do **Micronaut**](https://micronaut.io/)
+  * [Documentação do **Micronaut Data**](https://micronaut-projects.github.io/micronaut-data/latest/guide/)
+  * [Documentação Oficial do **H2 Database**](https://www.h2database.com/html/main.html)
 
 * 🎨 **Estilização e Layout (Front-end):**
   * [Documentação Oficial do **CSS (MDN Web Docs)**](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
