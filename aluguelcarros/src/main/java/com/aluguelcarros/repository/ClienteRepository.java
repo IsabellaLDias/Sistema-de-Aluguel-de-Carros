@@ -1,4 +1,8 @@
 package com.aluguelcarros.repository;
 
-public interface ClienteRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.aluguelcarros.model.Cliente;
+
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 }

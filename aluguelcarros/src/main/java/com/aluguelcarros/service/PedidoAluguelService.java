@@ -4,39 +4,36 @@ import org.springframework.stereotype.Service;
 import com.aluguelcarros.model.PedidoAluguel;
 import com.aluguelcarros.dto.PedidoAluguelDTO;
 import com.aluguelcarros.exception.ResourceNotFoundException;
+import com.aluguelcarros.repository.PedidoAluguelRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PedidoAluguelService {
 
-    private final List<PedidoAluguel> pedidos = new ArrayList<>();
-    private final AtomicLong contador = new AtomicLong();
+    private final PedidoAluguelRepository repository;
+
+    public PedidoAluguelService(PedidoAluguelRepository repository) {
+        this.repository = repository;
+    }
 
     public PedidoAluguel criar(PedidoAluguelDTO dto) {
         PedidoAluguel p = new PedidoAluguel();
-        p.setId(contador.incrementAndGet());
         p.setClienteId(dto.clienteId);
         p.setPrazoMeses(dto.prazoMeses);
         p.setValorPrevisto(dto.valorPrevisto);
         p.setDataPedido(LocalDate.now());
         p.setStatus("PENDENTE");
-
-        pedidos.add(p);
-        return p;
+        return repository.save(p);
     }
 
     public List<PedidoAluguel> listar() {
-        return pedidos;
+        return repository.findAll();
     }
 
     public PedidoAluguel buscarPorId(Long id) {
-        return pedidos.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
     }
 
@@ -48,14 +45,14 @@ public class PedidoAluguelService {
         p.setValorPrevisto(dto.valorPrevisto);
         p.setStatus(String.valueOf(dto.status));
 
-        return p;
+        return repository.save(p);
     }
 
     public boolean deletar(Long id) {
-        boolean removido = pedidos.removeIf(p -> p.getId().equals(id));
-        if (!removido) {
+        if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Pedido não encontrado");
         }
+        repository.deleteById(id);
         return true;
     }
 }

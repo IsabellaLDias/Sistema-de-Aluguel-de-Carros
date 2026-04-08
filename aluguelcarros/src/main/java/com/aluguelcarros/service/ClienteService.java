@@ -4,53 +4,50 @@ import org.springframework.stereotype.Service;
 import com.aluguelcarros.model.Cliente;
 import com.aluguelcarros.dto.ClienteDTO;
 import com.aluguelcarros.exception.ResourceNotFoundException;
+import com.aluguelcarros.repository.ClienteRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ClienteService {
 
-    private final List<Cliente> clientes = new ArrayList<>();
-    private final AtomicLong contador = new AtomicLong();
+    private final ClienteRepository repository;
+
+    public ClienteService(ClienteRepository repository) {
+        this.repository = repository;
+    }
 
     public Cliente criar(ClienteDTO dto) {
         Cliente c = new Cliente();
-        c.setId(contador.incrementAndGet());
         c.setNome(dto.nome);
         c.setCpf(dto.cpf);
         c.setRg(dto.rg);
         c.setEndereco(dto.endereco);
         c.setProfissao(dto.profissao);
-
-        clientes.add(c);
-        return c;
+        return repository.save(c);
     }
 
     public List<Cliente> listar() {
-        return clientes;
+        return repository.findAll();
     }
 
     public Cliente atualizar(Long id, ClienteDTO dto) {
-        for (Cliente c : clientes) {
-            if (c.getId().equals(id)) {
-                c.setNome(dto.nome);
-                c.setCpf(dto.cpf);
-                c.setRg(dto.rg);
-                c.setEndereco(dto.endereco);
-                c.setProfissao(dto.profissao);
-                return c;
-            }
-        }
-        throw new ResourceNotFoundException("Cliente não encontrado");
+        Cliente c = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        c.setNome(dto.nome);
+        c.setCpf(dto.cpf);
+        c.setRg(dto.rg);
+        c.setEndereco(dto.endereco);
+        c.setProfissao(dto.profissao);
+        return repository.save(c);
     }
 
     public boolean deletar(Long id) {
-        boolean removido = clientes.removeIf(c -> c.getId().equals(id));
-        if (!removido) {
+        if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Cliente não encontrado");
         }
+        repository.deleteById(id);
         return true;
     }
 }
