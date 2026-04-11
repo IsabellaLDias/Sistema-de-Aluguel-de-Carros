@@ -5,11 +5,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Serdeable
-public class Cliente {
+public class Cliente extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String nome;
     private String cpf;
@@ -17,14 +14,6 @@ public class Cliente {
     private String endereco;
     private String profissao;
     
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

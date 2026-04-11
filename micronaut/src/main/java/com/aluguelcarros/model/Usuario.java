@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Serdeable
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
     @Id
