@@ -3,7 +3,7 @@ package com.aluguelcarros.service;
 import com.aluguelcarros.model.Agente;
 import com.aluguelcarros.model.PedidoAluguel;
 import com.aluguelcarros.repository.AgenteRepository;
-import com.aluguelcarros.repository.PedidoRepository;
+import com.aluguelcarros.repository.PedidoAluguelRepository;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.Optional;
 public class AgenteService {
 
     private final AgenteRepository agenteRepository;
-    private final PedidoRepository pedidoRepository;
+    private final PedidoAluguelRepository pedidoRepository;
 
-    public AgenteService(AgenteRepository agenteRepository, PedidoRepository pedidoRepository) {
+    public AgenteService(AgenteRepository agenteRepository, PedidoAluguelRepository pedidoRepository) {
         this.agenteRepository = agenteRepository;
         this.pedidoRepository = pedidoRepository;
     }
