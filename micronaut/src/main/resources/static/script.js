@@ -8,14 +8,19 @@ let usuarioAtual = {
 
 async function cadastrarEEntrar() {
     // Inputs da tela de cadastro
+    const login = document.getElementById("regLogin").value.trim();
+    const senha = document.getElementById("regSenha").value.trim();
     const nome = document.getElementById("regNome").value.trim();
     const cpf = document.getElementById("regCpf").value.trim();
     const rg = document.getElementById("regRg").value.trim();
     const endereco = document.getElementById("regEndereco").value.trim();
     const profissao = document.getElementById("regProfissao").value.trim();
 
-    if (!nome || !cpf) {
-        alert("Por favor, preencha pelo menos Nome e CPF.");
+    // Verifica qual documento deve validar
+    const eAgente = !document.getElementById("grupo-cnpj").classList.contains("hidden");
+
+    if (!login || !senha || (eAgente ? !cnpj : !cpf)) {
+        alert("Por favor, preencha todos os campos obrigatórios!");
         return;
     }
 
@@ -258,3 +263,64 @@ async function listarPedidos() {
         btnAtualizar.innerHTML = "Atualizar Lista";
     }
 }
+
+
+// 1. Função para mostrar o formulário de Cliente ou Agente
+function mostrarCadastro(tipo) {
+    document.getElementById("tela-selecao").classList.add("hidden");
+    document.getElementById("tela-login").classList.remove("hidden");
+    document.getElementById("campos-extras-cadastro").classList.remove("hidden");
+
+    document.getElementById("titulo-cadastro").innerText = "Cadastro";
+    document.getElementById("btn-acao-principal").innerText = "Cadastrar e Acessar";
+
+    if (tipo === 'cliente') {
+        document.getElementById("grupo-cpf").classList.remove("hidden");
+        document.getElementById("grupo-cnpj").classList.add("hidden");
+    } else {
+        document.getElementById("grupo-cpf").classList.add("hidden");
+        document.getElementById("grupo-cnpj").classList.remove("hidden");
+    }
+}
+
+// 2. Função para o modo "Já tenho conta" (esconde o que não precisa)
+function mostrarApenasLogin() {
+    document.getElementById("tela-selecao").classList.add("hidden");
+    document.getElementById("tela-login").classList.remove("hidden");
+
+    // Esconde os campos de endereço, RG, CPF etc.
+    document.getElementById("campos-extras-cadastro").classList.add("hidden");
+
+    document.getElementById("titulo-cadastro").innerText = "Login";
+    document.getElementById("subtitulo-cadastro").innerText = "Entre com suas credenciais";
+    document.getElementById("btn-acao-principal").innerText = "Entrar no Sistema";
+}
+
+// 3. Função que decide se vai Cadastrar ou apenas Logar
+function executarAcaoPrincipal() {
+    const modoLogin = document.getElementById("campos-extras-cadastro").classList.contains("hidden");
+
+    if (modoLogin) {
+        realizarLogin();
+    } else {
+        cadastrarEEntrar(); // Sua função que já existe
+    }
+}
+
+// 4. Função de Login (Simples por enquanto)
+function realizarLogin() {
+    const login = document.getElementById("regLogin").value;
+    const senha = document.getElementById("regSenha").value;
+
+    if (!login || !senha) {
+        alert("Preencha login e senha!");
+        return;
+    }
+
+    // Aqui sua amiga vai conectar com o banco depois. 
+    // Por enquanto, vamos simular que entrou:
+    alert("Login realizado com sucesso!");
+    document.getElementById("tela-login").classList.add("hidden");
+    document.getElementById("tela-principal").classList.remove("hidden");
+}
+

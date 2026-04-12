@@ -1,128 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aluguel de Carros - Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div id="tela-login" class="card login-card">
-        <div class="login-card-header">
-            <h1>Cadastro</h1>
-            <p>Cadastre-se para começar a alugar</p>
-        </div>
+        <div class="auth-overlay ">
 
-        <div class="form-group">
-            <label for="regNome">Nome Completo</label>
-            <input type="text" id="regNome" placeholder="Ex: João Silva">
-        </div>
-
-        <div class="form-group">
-            <label for="regCpf">CPF</label>
-            <input type="text" id="regCpf" placeholder="Apenas números">
-        </div>
-
-        <div class="form-group">
-            <label for="regRg">RG</label>
-            <input type="text" id="regRg" placeholder="Apenas números">
-        </div>
-
-        <div class="form-group">
-            <label for="regEndereco">Endereço</label>
-            <input type="text" id="regEndereco" placeholder="Rua, Número, Bairro">
-        </div>
-
-        <div class="form-group">
-            <label for="regProfissao">Profissão</label>
-            <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
-        </div>
-
-        <button class="btn btn-primary btn-full" onclick="cadastrarEEntrar()">Cadastrar e Acessar</button>
-    </div>
-
-    <div id="tela-principal" class="hidden">
-
-        <header class="dashboard-header">
-            <div>
-                <h1>Sistema de Aluguel</h1>
-                <p>Olá, <strong id="userNameDisplay"></strong>!</p>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="abrirPerfil()">Meu Perfil</button>
-                <button class="btn-logout" onclick="sairSistema()">Sair</button>
-            </div>
-        </header>
-
-        <div id="dashboard-content" class="content">
-            <div class="card">
-                <h2>Novo Pedido</h2>
-                <div class="form-group">
-                    <label for="prazo">Prazo (meses)</label>
-                    <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
-                </div>
-                <div class="form-group">
-                    <label for="valor">Valor Previsto (R$)</label>
-                    <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
-                </div>
-                <button class="btn btn-primary btn-full" onclick="criarPedido()">Criar Pedido</button>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2>Meus Pedidos</h2>
-                    <button class="btn btn-secondary btn-sm" onclick="listarPedidos()">Atualizar Lista</button>
-                </div>
-                <div id="lista"></div>
-            </div>
-        </div>
-
-        <div id="tela-perfil" class="hidden">
-            <div class="card card-profile">
-                <div class="card-header">
-                    <h2>Meus Dados</h2>
-                    <button class="btn btn-secondary btn-sm" onclick="voltarDashboard()">Voltar</button>
+            <div id="tela-selecao" class="card login-card">
+                <div class="login-card-header">
+                    <h1>Bem-vindo</h1>
+                    <p>Como você deseja se cadastrar?</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="editNome">Nome Completo</label>
-                    <input type="text" id="editNome">
+                <div class="perfil-options">
+                    <button class="btn btn-secondary btn-full" onclick="mostrarCadastro('cliente')">
+                        Sou Cliente (CPF)
+                    </button>
+                    <button class="btn btn-secondary btn-full" style="margin-top: 12px;"
+                        onclick="mostrarCadastro('agente')">
+                        Sou Agente (CNPJ)
+                    </button>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                    Já tem uma conta? <a href="#" onclick="mostrarApenasLogin()"
+                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Clique aqui para
+                        entrar</a>
+                </p>
+            </div>
+
+            <div id="tela-login" class="card login-card hidden">
+                <div class="login-card-header">
+                    <h1 id="titulo-cadastro">Cadastro</h1>
+                    <p id="subtitulo-cadastro">Preencha os dados para acessar o sistema</p>
                 </div>
 
                 <div class="form-group row-2">
                     <div class="form-group">
-                        <label for="editCpf">CPF</label>
-                        <input type="text" id="editCpf">
+                        <label for="regLogin">Login</label>
+                        <input type="text" id="regLogin" placeholder="Usuário">
                     </div>
                     <div class="form-group">
-                        <label for="editRg">RG</label>
-                        <input type="text" id="editRg">
+                        <label for="regSenha">Senha</label>
+                        <input type="password" id="regSenha" placeholder="********">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="editEndereco">Endereço</label>
-                    <input type="text" id="editEndereco">
+                <div id="campos-extras-cadastro">
+                    <div class="form-group">
+                        <label for="regNome">Nome Completo</label>
+                        <input type="text" id="regNome" placeholder="Ex: João Silva">
+                    </div>
+
+                    <div class="form-group" id="grupo-cpf">
+                        <label for="regCpf">CPF</label>
+                        <input type="text" id="regCpf" placeholder="Apenas números">
+                    </div>
+
+                    <div class="form-group hidden" id="grupo-cnpj">
+                        <label for="regCnpj">CNPJ</label>
+                        <input type="text" id="regCnpj" placeholder="Apenas números">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regRg">RG</label>
+                        <input type="text" id="regRg" placeholder="Apenas números">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEndereco">Endereço</label>
+                        <input type="text" id="regEndereco" placeholder="Rua, Número, Bairro">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regProfissao">Profissão</label>
+                        <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
+                    </div>
+
                 </div>
 
-                <div class="form-group">
-                    <label for="editProfissao">Profissão</label>
-                    <input type="text" id="editProfissao">
-                </div>
+                <button class="btn btn-primary btn-full" onclick="cadastrarEEntrar()">Cadastrar e Acessar</button>
 
-                <div class="profile-actions">
-                    <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar</button>
-                    <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha Conta</button>
-                </div>
+
+                <button class="btn btn-secondary btn-full voltar" style="margin-top: 10px; border:none; background:none;"
+                    onclick="location.reload()">Voltar</button>
+
             </div>
         </div>
+        <div id="tela-principal" class="hidden">
 
+            <header class="dashboard-header">
+                <div>
+                    <h1>AlugueCarros</h1>
+                    <p>Olá, <strong id="userNameDisplay"></strong>!</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="abrirPerfil()">Meu Perfil</button>
+                    <button class="btn-logout" onclick="sairSistema()">Sair</button>
+                </div>
+            </header>
+
+            <div id="dashboard-content" class="content">
+                <div class="card">
+                    <h2>Novo Pedido</h2>
+                    <div class="form-group">
+                        <label for="prazo">Prazo (meses)</label>
+                        <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="valor">Valor Previsto (R$)</label>
+                        <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="criarPedido()">Criar Pedido</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Meus Pedidos</h2>
+                        <button class="btn btn-secondary btn-sm" onclick="listarPedidos()">Atualizar Lista</button>
+                    </div>
+                    <div id="lista"></div>
+                </div>
+            </div>
+
+            <div id="tela-perfil" class="hidden">
+                <div class="card card-profile">
+                    <div class="card-header">
+                        <h2>Meus Dados</h2>
+                        <button class="btn btn-secondary btn-sm" onclick="voltarDashboard()">Voltar</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editNome">Nome Completo</label>
+                        <input type="text" id="editNome">
+                    </div>
+
+                    <div class="form-group row-2">
+                        <div class="form-group">
+                            <label for="editCpf">CPF</label>
+                            <input type="text" id="editCpf">
+                        </div>
+                        <div class="form-group">
+                            <label for="editRg">RG</label>
+                            <input type="text" id="editRg">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEndereco">Endereço</label>
+                        <input type="text" id="editEndereco">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProfissao">Profissão</label>
+                        <input type="text" id="editProfissao">
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar</button>
+                        <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha
+                            Conta</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="estrada">
+               <img src="https://static.vecteezy.com/system/resources/thumbnails/039/213/331/small/side-view-gray-suv-car-free-png.png" class="carro-animado" alt="Carro Esportivo">
+            </div>
+
+        </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
