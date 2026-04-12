@@ -23,7 +23,6 @@ public class PedidoAluguelService {
 
     public PedidoAluguel criar(PedidoAluguelDTO dto) {
         PedidoAluguel p = new PedidoAluguel();
-        p.setClienteId(dto.getClienteId());
         p.setPrazoMeses(dto.getPrazoMeses());
         p.setValorPrevisto(dto.getValorPrevisto());
         p.setDataPedido(LocalDate.now());
@@ -43,7 +42,6 @@ public class PedidoAluguelService {
     public PedidoAluguel atualizar(Long id, PedidoAluguelDTO dto) {
         PedidoAluguel p = buscarPorId(id);
 
-        p.setClienteId(dto.getClienteId());
         p.setPrazoMeses(dto.getPrazoMeses());
         p.setValorPrevisto(dto.getValorPrevisto());
         p.setStatus(String.valueOf(dto.getStatus()));

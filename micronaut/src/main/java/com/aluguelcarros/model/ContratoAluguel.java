@@ -17,8 +17,13 @@ public class ContratoAluguel {
     private LocalDate dataFim;
     private String tipoContrato;
 
-    // Relacionamento conforme o diagrama: ContratoAluguel inclui Automovel (1..*)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne
+    private PedidoAluguel pedido;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContratoCredito contratoCredito;
+
+    @ManyToMany // Agregação: contrato inclui vários automóveis
     private List<Automovel> automoveis;
 
     // --- Getters e Setters ---
@@ -34,6 +39,9 @@ public class ContratoAluguel {
 
     public String getTipoContrato() { return tipoContrato; }
     public void setTipoContrato(String tipoContrato) { this.tipoContrato = tipoContrato; }
+
+    public PedidoAluguel getPedido() { return pedido; }
+    public void setPedido(PedidoAluguel pedido) { this.pedido = pedido; }
 
     // O MÉTODO QUE ESTAVA FALTANDO:
     public List<Automovel> getAutomoveis() {
