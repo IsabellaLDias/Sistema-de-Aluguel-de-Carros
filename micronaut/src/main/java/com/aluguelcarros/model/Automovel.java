@@ -1,8 +1,14 @@
 package com.aluguelcarros.model;
 
-import jakarta.persistence.ManyToOne;
+import io.micronaut.serde.annotation.Serdeable;
+import jakarta.persistence.*;
 
+@Serdeable
+@Entity
 public class Automovel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String matricula;
     private Integer ano;
@@ -13,43 +19,25 @@ public class Automovel {
     @ManyToOne
     private Usuario proprietario;
 
-    public String getMatricula() {
-        return matricula;
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Integer getAno() {
-        return ano;
-    }
+    public String getMatricula() { return matricula; }
+    public void setMatricula(String matricula) { this.matricula = matricula; }
 
-    public String getMarca() {
-        return marca;
-    }
+    public Integer getAno() { return ano; }
+    public void setAno(Integer ano) { this.ano = ano; }
 
-    public String getModelo() {
-        return modelo;
-    }
+    public String getMarca() { return marca; }
+    public void setMarca(String marca) { this.marca = marca; }
 
-    public String getPlaca() {
-        return placa;
-    }
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
+    public String getModelo() { return modelo; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
 
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
+    public String getPlaca() { return placa; }
+    public void setPlaca(String placa) { this.placa = placa; }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
+    public Usuario getProprietario() { return proprietario; }
+    public void setProprietario(Usuario proprietario) { this.proprietario = proprietario; }
 }

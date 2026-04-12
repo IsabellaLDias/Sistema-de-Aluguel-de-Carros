@@ -40,4 +40,7 @@ public class PedidoAluguel {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+
 }
