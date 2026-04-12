@@ -1,9 +1,14 @@
 package com.aluguelcarros.model;
 
+import jakarta.persistence.ManyToOne;
+
 public class ContratoCredito {
 
     private Double valor;
     private Double taxaJuros;
+
+    @ManyToOne
+    private Banco bancoConcedente;
 
     public Double getValor() {
         return valor;

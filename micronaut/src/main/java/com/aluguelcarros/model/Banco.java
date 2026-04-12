@@ -1,6 +1,6 @@
 package com.aluguelcarros.model;
 
-public class Banco extends Agente {
+public class Banco extends Agente implements Proprietario {
 
     private Integer codigoBanco;
     private String nomeFantasia;

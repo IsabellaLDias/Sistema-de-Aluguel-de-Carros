@@ -1,5 +1,7 @@
 package com.aluguelcarros.model;
 
+import jakarta.persistence.ManyToOne;
+
 public class Automovel {
 
     private String matricula;
@@ -7,6 +9,9 @@ public class Automovel {
     private String marca;
     private String modelo;
     private String placa;
+
+    @ManyToOne
+    private Usuario proprietario;
 
     public String getMatricula() {
         return matricula;

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Serdeable
-public class Cliente extends Usuario {
+public class Cliente extends Usuario implements Proprietario {
 
 
     private String nome;

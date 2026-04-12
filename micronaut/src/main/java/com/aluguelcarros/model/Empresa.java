@@ -1,6 +1,6 @@
 package com.aluguelcarros.model;
 
-public class Empresa extends Agente {
+public class Empresa extends Agente implements Proprietario {
 
     private String razaoSocial;
     private String inscricaoEstadual;

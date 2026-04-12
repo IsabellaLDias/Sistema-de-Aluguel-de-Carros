@@ -16,7 +16,14 @@ public class PedidoAluguel {
     private Double valorPrevisto;
     private String status;
 
-    private Long clienteId;
+    @ManyToOne
+    private Cliente cliente;
+
+    @ManyToOne
+    private Agente avaliador;
+
+    @OneToOne(mappedBy = "pedido")
+    private ContratoAluguel contratoGerado;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -33,6 +40,4 @@ public class PedidoAluguel {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public Long getClienteId() { return clienteId; }
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
 }
