@@ -4,39 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aluguel de Carros - Dashboard</title>
+    <title>AlugueCarros — Sistema de Aluguel</title>
+    <meta name="description" content="Sistema de aluguel de carros com análise financeira por agentes parceiros.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Exo+2:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <div class="container">
 
-        <div class="auth-overlay ">
+        <!-- ===================== AUTH OVERLAY ===================== -->
+        <div class="auth-overlay" id="auth-overlay">
 
+            <!-- Tela 1: Seleção de perfil -->
             <div id="tela-selecao" class="card login-card">
                 <div class="login-card-header">
-                    <h1>Bem-vindo</h1>
+                    <h1>AlugueCarros</h1>
                     <p>Como você deseja se cadastrar?</p>
                 </div>
-
                 <div class="perfil-options">
-                    <button class="btn btn-secondary btn-full" onclick="mostrarCadastro('cliente')">
+                    <button class="btn btn-secondary btn-full" id="btn-sou-cliente" onclick="mostrarCadastro('cliente')">
                         Sou Cliente (CPF)
                     </button>
-                    <button class="btn btn-secondary btn-full" style="margin-top: 12px;"
-                        onclick="mostrarCadastro('agente')">
+                    <button class="btn btn-secondary btn-full" id="btn-sou-agente" onclick="mostrarCadastro('agente')">
                         Sou Agente (CNPJ)
                     </button>
                 </div>
-
-                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
-                    Já tem uma conta? <a href="#" onclick="mostrarApenasLogin()"
-                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Clique aqui para
-                        entrar</a>
+                <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                    Já tem uma conta? <a href="#" id="link-login" onclick="mostrarApenasLogin()"
+                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Clique aqui para entrar</a>
                 </p>
             </div>
 
+            <!-- Tela 2: Cadastro / Login -->
             <div id="tela-login" class="card login-card hidden">
                 <div class="login-card-header">
                     <h1 id="titulo-cadastro">Cadastro</h1>
@@ -46,138 +48,392 @@
                 <div class="form-group row-2">
                     <div class="form-group">
                         <label for="regLogin">Login</label>
-                        <input type="text" id="regLogin" placeholder="Usuário">
+                        <input type="text" id="regLogin" placeholder="Usuário" autocomplete="username">
                     </div>
                     <div class="form-group">
                         <label for="regSenha">Senha</label>
-                        <input type="password" id="regSenha" placeholder="********">
+                        <input type="password" id="regSenha" placeholder="********" autocomplete="current-password">
                     </div>
                 </div>
 
+                <!-- Campos extras para cadastro -->
                 <div id="campos-extras-cadastro">
                     <div class="form-group">
                         <label for="regNome">Nome Completo</label>
                         <input type="text" id="regNome" placeholder="Ex: João Silva">
                     </div>
 
+                    <!-- CPF (cliente) -->
                     <div class="form-group" id="grupo-cpf">
                         <label for="regCpf">CPF</label>
-                        <input type="text" id="regCpf" placeholder="Apenas números">
+                        <input type="text" id="regCpf" placeholder="Apenas números" maxlength="11">
                     </div>
 
+                    <!-- CNPJ (agente) -->
                     <div class="form-group hidden" id="grupo-cnpj">
                         <label for="regCnpj">CNPJ</label>
-                        <input type="text" id="regCnpj" placeholder="Apenas números">
+                        <input type="text" id="regCnpj" placeholder="Apenas números" maxlength="14">
                     </div>
 
-                    <div class="form-group">
-                        <label for="regRg">RG</label>
-                        <input type="text" id="regRg" placeholder="Apenas números">
+                    <!-- Campos só para cliente -->
+                    <div id="campos-cliente-extra">
+                        <div class="form-group row-2">
+                            <div class="form-group">
+                                <label for="regRg">RG</label>
+                                <input type="text" id="regRg" placeholder="Apenas números">
+                            </div>
+                            <div class="form-group">
+                                <label for="regProfissao">Profissão</label>
+                                <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regEndereco">Endereço</label>
+                            <input type="text" id="regEndereco" placeholder="Rua, Número, Bairro">
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="regEndereco">Endereço</label>
-                        <input type="text" id="regEndereco" placeholder="Rua, Número, Bairro">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="regProfissao">Profissão</label>
-                        <input type="text" id="regProfissao" placeholder="Ex: Engenheiro">
-                    </div>
-
                 </div>
 
                 <button id="btn-acao-principal" class="btn btn-primary btn-full" onclick="executarAcaoPrincipal()">Cadastrar e Acessar</button>
 
-
                 <button class="btn btn-secondary btn-full voltar" style="margin-top: 10px; border:none; background:none;"
                     onclick="location.reload()">Voltar</button>
-
             </div>
         </div>
+
+        <!-- ===================== TELA PRINCIPAL ===================== -->
         <div id="tela-principal" class="hidden">
 
             <header class="dashboard-header">
                 <div>
                     <h1>AlugueCarros</h1>
-                    <p>Olá, <strong id="userNameDisplay"></strong>!</p>
+                    <p>Olá, <strong id="userNameDisplay"></strong>
+                        <span id="badge-tipo-usuario" class="badge-tipo"></span>
+                    </p>
                 </div>
+                <nav class="dashboard-nav" id="dashboard-nav">
+                    <!-- Abas geradas pelo JS -->
+                </nav>
                 <div class="header-actions">
-                    <button class="btn btn-secondary" onclick="abrirPerfil()">Meu Perfil</button>
                     <button class="btn-logout" onclick="sairSistema()">Sair</button>
                 </div>
             </header>
 
-            <div id="dashboard-content" class="content">
-                <div class="card">
-                    <h2>Novo Pedido</h2>
-                    <div class="form-group">
-                        <label for="prazo">Prazo (meses)</label>
-                        <input type="number" id="prazo" placeholder="Digite o prazo em meses" min="1">
-                    </div>
-                    <div class="form-group">
-                        <label for="valor">Valor Previsto (R$)</label>
-                        <input type="number" id="valor" placeholder="Digite o valor" min="0" step="0.01">
-                    </div>
-                    <button class="btn btn-primary btn-full" onclick="criarPedido()">Criar Pedido</button>
-                </div>
+            <!-- ===== CONTEÚDO: CLIENTE ===== -->
+            <div id="tela-cliente" class="hidden">
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Meus Pedidos</h2>
-                        <button class="btn btn-secondary btn-sm" onclick="listarPedidos()">Atualizar Lista</button>
-                    </div>
-                    <div id="lista"></div>
-                </div>
-            </div>
-
-            <div id="tela-perfil" class="hidden">
-                <div class="card card-profile">
-                    <div class="card-header">
-                        <h2>Meus Dados</h2>
-                        <button class="btn btn-secondary btn-sm" onclick="voltarDashboard()">Voltar</button>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editNome">Nome Completo</label>
-                        <input type="text" id="editNome">
-                    </div>
-
-                    <div class="form-group row-2">
-                        <div class="form-group">
-                            <label for="editCpf">CPF</label>
-                            <input type="text" id="editCpf">
+                <!-- Aba: Pedidos -->
+                <div id="aba-cliente-pedidos" class="aba-content hidden">
+                    <div class="content">
+                        <div class="card">
+                            <h2>Novo Pedido</h2>
+                            <div class="form-group">
+                                <label for="prazo">Prazo (meses)</label>
+                                <input type="number" id="prazo" placeholder="Ex: 12" min="1" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="valor">Valor Previsto (R$)</label>
+                                <input type="number" id="valor" placeholder="Ex: 25000.00" min="0" step="0.01">
+                            </div>
+                            <button class="btn btn-primary btn-full" id="btn-criar-pedido" onclick="criarPedido()">Criar Pedido</button>
                         </div>
-                        <div class="form-group">
-                            <label for="editRg">RG</label>
-                            <input type="text" id="editRg">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Meus Pedidos</h2>
+                                <button class="btn btn-secondary btn-sm" onclick="listarPedidosCliente()">Atualizar</button>
+                            </div>
+                            <div id="lista-pedidos-cliente"></div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="editEndereco">Endereço</label>
-                        <input type="text" id="editEndereco">
-                    </div>
+                <!-- Aba: Perfil -->
+                <div id="aba-cliente-perfil" class="aba-content hidden">
+                    <div class="card card-profile">
+                        <div class="card-header">
+                            <h2>Meus Dados</h2>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="editProfissao">Profissão</label>
-                        <input type="text" id="editProfissao">
-                    </div>
+                        <div class="form-group">
+                            <label for="editNome">Nome Completo</label>
+                            <input type="text" id="editNome">
+                        </div>
+                        <div class="form-group row-2">
+                            <div class="form-group">
+                                <label for="editCpf">CPF</label>
+                                <input type="text" id="editCpf">
+                            </div>
+                            <div class="form-group">
+                                <label for="editRg">RG</label>
+                                <input type="text" id="editRg">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEndereco">Endereço</label>
+                            <input type="text" id="editEndereco">
+                        </div>
+                        <div class="form-group">
+                            <label for="editProfissao">Profissão</label>
+                            <input type="text" id="editProfissao">
+                        </div>
 
-                    <div class="profile-actions">
-                        <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar</button>
-                        <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha
-                            Conta</button>
+                        <!-- Rendimentos -->
+                        <div class="rendimentos-section">
+                            <div class="rendimentos-header">
+                                <h3>Rendimentos <span class="text-muted" style="font-size:0.8rem; font-weight:400;">(máx. 3)</span></h3>
+                            </div>
+                            <div id="lista-rendimentos"></div>
+                            <div id="form-novo-rendimento" class="rendimento-novo-form hidden">
+                                <div class="form-group row-2" style="margin:0;">
+                                    <div class="form-group" style="margin:0;">
+                                        <label>Entidade Empregadora</label>
+                                        <input type="text" id="novoRendimentoEntidade" placeholder="Ex: Empresa XYZ">
+                                    </div>
+                                    <div class="form-group" style="margin:0;">
+                                        <label>Rendimento (R$)</label>
+                                        <input type="number" id="novoRendimentoValor" placeholder="Ex: 5000.00" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="rendimento-novo-actions">
+                                    <button class="btn btn-secondary btn-sm" onclick="cancelarNovoRendimento()">Cancelar</button>
+                                    <button class="btn btn-primary btn-sm" onclick="confirmarNovoRendimento()">Salvar</button>
+                                </div>
+                            </div>
+                            <button id="btn-add-rendimento" class="btn btn-secondary btn-sm" style="margin-top:12px;" onclick="mostrarFormRendimento()">+ Adicionar Rendimento</button>
+                        </div>
+
+                        <div class="profile-actions">
+                            <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar Dados</button>
+                            <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha Conta</button>
+                        </div>
                     </div>
                 </div>
 
             </div>
-            <div class="estrada">
-               <img src="https://static.vecteezy.com/system/resources/thumbnails/039/213/331/small/side-view-gray-suv-car-free-png.png" class="carro-animado" alt="Carro Esportivo">
+
+            <!-- ===== CONTEÚDO: AGENTE ===== -->
+            <div id="tela-agente" class="hidden">
+
+                <!-- Aba: Pedidos do Agente -->
+                <div id="aba-agente-pedidos" class="aba-content hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Pedidos para Análise</h2>
+                            <button class="btn btn-secondary btn-sm" onclick="listarPedidosAgente()">Atualizar</button>
+                        </div>
+                        <div id="lista-pedidos-agente"></div>
+                    </div>
+                </div>
+
+                <!-- Aba: Contratos -->
+                <div id="aba-agente-contratos" class="aba-content hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Pedidos Aprovados — Aguardando Contrato</h2>
+                            <button class="btn btn-secondary btn-sm" onclick="carregarContratos()">Atualizar</button>
+                        </div>
+                        <div id="lista-pedidos-aprovados"></div>
+                    </div>
+                    <div class="card" style="margin-top: 24px;">
+                        <div class="card-header">
+                            <h2>Contratos Criados</h2>
+                        </div>
+                        <div id="lista-contratos"></div>
+                    </div>
+                </div>
+
+                <!-- Aba: Automóveis -->
+                <div id="aba-agente-automoveis" class="aba-content hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Frota de Automóveis</h2>
+                            <button class="btn btn-primary btn-sm" onclick="abrirModalAutomovel()">Novo Automóvel</button>
+                        </div>
+                        <div id="lista-automoveis-agente"></div>
+                    </div>
+                </div>
+
+                <!-- Aba: Perfil do Agente -->
+                <div id="aba-agente-perfil" class="aba-content hidden">
+                    <div class="card card-profile">
+                        <div class="card-header">
+                            <h2>Dados do Agente</h2>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAgenteNome">Nome / Razão Social</label>
+                            <input type="text" id="editAgenteNome">
+                        </div>
+                        <div class="form-group">
+                            <label for="editAgenteCnpj">CNPJ</label>
+                            <input type="text" id="editAgenteCnpj" readonly style="opacity:0.7;">
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn btn-primary action-save" onclick="salvarPerfilAgente()">Salvar Dados</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Animação da estrada -->
+            <div class="estrada" id="estrada-anim">
+               <img src="https://static.vecteezy.com/system/resources/thumbnails/039/213/331/small/side-view-gray-suv-car-free-png.png" class="carro-animado" alt="Carro animado">
             </div>
 
         </div>
     </div>
+
+    <!-- ===================== MODAL: EDITAR PEDIDO ===================== -->
+    <div id="modal-pedido" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Editar Pedido</h3>
+                <button class="modal-close" onclick="fecharModal('modal-pedido')">x</button>
+            </div>
+            <div class="modal-simple-body">
+                <div class="form-group">
+                    <label for="editPrazo">Prazo (meses)</label>
+                    <input type="number" id="editPrazo" min="1" max="120">
+                </div>
+                <div class="form-group">
+                    <label for="editValor">Valor Previsto (R$)</label>
+                    <input type="number" id="editValor" min="0" step="0.01">
+                </div>
+                <input type="hidden" id="editPedidoId">
+                <input type="hidden" id="editPedidoClienteId">
+                <input type="hidden" id="editPedidoStatus">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="fecharModal('modal-pedido')">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarEdicaoPedido()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MODAL: AUTOMÓVEL ===================== -->
+    <div id="modal-automovel" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Novo Automóvel</h3>
+                <button class="modal-close" onclick="fecharModal('modal-automovel')">x</button>
+            </div>
+            <div class="modal-simple-body">
+                <div class="form-group row-2">
+                    <div class="form-group">
+                        <label for="autoMarca">Marca</label>
+                        <input type="text" id="autoMarca" placeholder="Ex: Toyota">
+                    </div>
+                    <div class="form-group">
+                        <label for="autoModelo">Modelo</label>
+                        <input type="text" id="autoModelo" placeholder="Ex: Corolla">
+                    </div>
+                </div>
+                <div class="form-group row-2">
+                    <div class="form-group">
+                        <label for="autoAno">Ano</label>
+                        <input type="number" id="autoAno" placeholder="Ex: 2022" min="1900" max="2030">
+                    </div>
+                    <div class="form-group">
+                        <label for="autoPlaca">Placa</label>
+                        <input type="text" id="autoPlaca" placeholder="ABC-1234" maxlength="8">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="autoMatricula">Matrícula</label>
+                    <input type="text" id="autoMatricula" placeholder="Número de matrícula">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="fecharModal('modal-automovel')">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-automovel" onclick="salvarAutomovel()">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MODAL: CRIAR CONTRATO ===================== -->
+    <div id="modal-contrato" class="modal-overlay hidden">
+        <div class="modal-card modal-card-lg">
+
+            <!-- Header fixo -->
+            <div class="modal-header">
+                <h3>Criar Contrato de Aluguel</h3>
+                <button class="modal-close" onclick="fecharModal('modal-contrato')">x</button>
+            </div>
+
+            <!-- Corpo com scroll interno -->
+            <div class="modal-body">
+
+                <!-- DADOS DO CONTRATANTE -->
+                <div class="contratante-section">
+                    <div class="contratante-header-label">Dados do Contratante</div>
+                    <div id="contratante-info">
+                        <div class="loading">Carregando dados...</div>
+                    </div>
+                </div>
+
+                <div class="modal-divider"></div>
+
+                <!-- TIPO DE CONTRATO -->
+                <div class="form-group">
+                    <label for="contratoTipo">Tipo de Contrato (Registro de Propriedade do Veículo)</label>
+                    <select id="contratoTipo" onchange="toggleCreditoFields()">
+                        <option value="CLIENTE">Propriedade do Cliente (contratante)</option>
+                        <option value="EMPRESA">Propriedade da Empresa (agente)</option>
+                        <option value="BANCO">Propriedade do Banco + Contrato de Crédito</option>
+                    </select>
+                </div>
+
+                <!-- DATAS -->
+                <div class="form-group row-2">
+                    <div class="form-group">
+                        <label for="contratoDataInicio">Data de Início</label>
+                        <input type="date" id="contratoDataInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="contratoDataFim">Data de Fim</label>
+                        <input type="date" id="contratoDataFim">
+                    </div>
+                </div>
+
+                <!-- AUTOMÓVEIS -->
+                <div class="form-group">
+                    <label>Automóveis do Contrato</label>
+                    <div id="contrato-veiculos-lista" class="veiculos-check-lista"></div>
+                </div>
+
+                <!-- CONTRATO DE CRÉDITO (somente tipo BANCO) -->
+                <div id="campos-credito" class="hidden">
+                    <div class="secao-credito">
+                        <p class="secao-credito-titulo">Contrato de Crédito (Banco concedente)</p>
+                        <div class="form-group row-2">
+                            <div class="form-group">
+                                <label for="creditoValor">Valor do Crédito (R$)</label>
+                                <input type="number" id="creditoValor" step="0.01" placeholder="Ex: 50000.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="creditoTaxa">Taxa de Juros (% a.m.)</label>
+                                <input type="number" id="creditoTaxa" step="0.01" placeholder="Ex: 1.5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="contratoPedidoId">
+
+            </div><!-- /modal-body -->
+
+            <!-- Footer fixo com botões -->
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="fecharModal('modal-contrato')">Cancelar</button>
+                <button class="btn btn-primary" id="btn-salvar-contrato" onclick="salvarContrato()">Criar Contrato</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===================== TOAST ===================== -->
+    <div id="toast" class="toast hidden"></div>
 
     <script src="script.js"></script>
 </body>

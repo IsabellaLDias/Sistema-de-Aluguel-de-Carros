@@ -1,5 +1,6 @@
 package com.aluguelcarros.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -20,8 +21,12 @@ public class PedidoAluguel {
     private Cliente cliente;
 
     @ManyToOne
+    @JsonIgnore
     private Agente avaliador;
 
+    // @JsonIgnore: evita referência circular
+    // ContratoAluguel → PedidoAluguel → ContratoAluguel → ∞
+    @JsonIgnore
     @OneToOne(mappedBy = "pedido")
     private ContratoAluguel contratoGerado;
 

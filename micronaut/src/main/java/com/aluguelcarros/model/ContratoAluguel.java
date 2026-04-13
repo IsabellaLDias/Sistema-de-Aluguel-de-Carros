@@ -1,5 +1,6 @@
 package com.aluguelcarros.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -17,13 +18,18 @@ public class ContratoAluguel {
     private LocalDate dataFim;
     private String tipoContrato;
 
+    // @JsonIgnore: evita serializar a árvore inteira PedidoAluguel → Cliente → ...
+    // O frontend recebe o ID via getPedidoId()
+    @JsonIgnore
     @OneToOne
     private PedidoAluguel pedido;
 
     @OneToOne(cascade = CascadeType.ALL)
     private ContratoCredito contratoCredito;
 
-    @ManyToMany // Agregação: contrato inclui vários automóveis
+    // @JsonIgnore: evita LazyInitializationException ao serializar fora da transação
+    @JsonIgnore
+    @ManyToMany
     private List<Automovel> automoveis;
 
     // --- Getters e Setters ---
@@ -43,12 +49,15 @@ public class ContratoAluguel {
     public PedidoAluguel getPedido() { return pedido; }
     public void setPedido(PedidoAluguel pedido) { this.pedido = pedido; }
 
-    // O MÉTODO QUE ESTAVA FALTANDO:
-    public List<Automovel> getAutomoveis() {
-        return automoveis;
+    // Expõe apenas o ID do pedido para o frontend (sem serializar o objeto inteiro)
+    @Transient
+    public Long getPedidoId() {
+        return pedido != null ? pedido.getId() : null;
     }
 
-    public void setAutomoveis(List<Automovel> automoveis) {
-        this.automoveis = automoveis;
-    }
+    public List<Automovel> getAutomoveis() { return automoveis; }
+    public void setAutomoveis(List<Automovel> automoveis) { this.automoveis = automoveis; }
+
+    public ContratoCredito getContratoCredito() { return contratoCredito; }
+    public void setContratoCredito(ContratoCredito contratoCredito) { this.contratoCredito = contratoCredito; }
 }
