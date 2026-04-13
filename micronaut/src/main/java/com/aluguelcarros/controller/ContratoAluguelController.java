@@ -1,5 +1,6 @@
 package com.aluguelcarros.controller;
 
+import com.aluguelcarros.dto.ContratoAluguelCreateDTO;
 import com.aluguelcarros.model.ContratoAluguel;
 import com.aluguelcarros.service.ContratoAluguelService;
 import io.micronaut.http.HttpResponse;
@@ -23,12 +24,27 @@ public class ContratoAluguelController {
         return contratoService.listar();
     }
 
-    @Post
-    public HttpResponse<ContratoAluguel> criar(@Body ContratoAluguel contrato) {
-        return HttpResponse.created(contratoService.salvar(contrato));
+    @Get("/{id}")
+    public HttpResponse<ContratoAluguel> buscarPorId(Long id) {
+        return contratoService.buscarPorId(id)
+                .map(HttpResponse::ok)
+                .orElse(HttpResponse.notFound());
     }
 
-    // Endpoint para a operação "executarContrato()" do seu diagrama
+    /**
+     * Cria um contrato completo via DTO:
+     * - vincula ao pedido aprovado
+     * - registra propriedade dos veículos conforme tipo (CLIENTE / EMPRESA / BANCO)
+     * - vincula contrato de crédito quando tipo = BANCO
+     */
+    @Post
+    public HttpResponse<ContratoAluguel> criar(@Body ContratoAluguelCreateDTO dto) {
+        return HttpResponse.created(contratoService.criarContrato(dto));
+    }
+
+    /**
+     * Executa um contrato (operação +executarContrato() do diagrama de classe).
+     */
     @Post("/{id}/executar")
     public HttpResponse<Void> executar(Long id) {
         contratoService.executarContrato(id);
