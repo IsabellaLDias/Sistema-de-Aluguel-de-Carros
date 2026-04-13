@@ -43,4 +43,9 @@ public class PedidoAluguel {
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
+    @Transient
+    public Long getClienteId() {
+        return cliente != null ? cliente.getId() : null;
+    }
+
 }
