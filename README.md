@@ -227,7 +227,6 @@ A organização do projeto segue a arquitetura do Micronaut, onde a API e o Fron
 <img width="600px" src="docs/images/Diagrama de Casos de Uso.png"/> 
 <br>
 
-
 ### Diagrama de Classes
 <br>
 <img width="600px" src="docs/images/diagrama_classes.png"/> 
@@ -241,6 +240,11 @@ A organização do projeto segue a arquitetura do Micronaut, onde a API e o Fron
 ### Diagrama de Componentes 
 <br>
 <img width="900px" src="./docs/images/Diagrama de componentes.png"/>
+<br>
+
+### Diagrama de Implantação
+<br>
+<img width="900px" src="./docs/images/Diagrama de Implantação.png"/>
 <br>
 ---
 
