@@ -22,12 +22,18 @@ public class ClienteService {
 
     public Cliente criar(ClienteDTO dto) {
         Cliente c = new Cliente();
+        if (dto.getLogin() != null && !dto.getLogin().isBlank()) {
+            c.setLogin(dto.getLogin());
+        }
+        if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
+            c.setSenha(dto.getSenha());
+        }
         c.setNome(dto.getNome());
         c.setCpf(dto.getCpf());
         c.setRg(dto.getRg());
         c.setEndereco(dto.getEndereco());
         c.setProfissao(dto.getProfissao());
-        return repository.update(c);
+        return repository.save(c);
     }
 
     public List<Cliente> listar() {
@@ -38,6 +44,12 @@ public class ClienteService {
         Cliente c = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
+        if (dto.getLogin() != null && !dto.getLogin().isBlank()) {
+            c.setLogin(dto.getLogin());
+        }
+        if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
+            c.setSenha(dto.getSenha());
+        }
         c.setNome(dto.getNome());
         c.setCpf(dto.getCpf());
         c.setRg(dto.getRg());

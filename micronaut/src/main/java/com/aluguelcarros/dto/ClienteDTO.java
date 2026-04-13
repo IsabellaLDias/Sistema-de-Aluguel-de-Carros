@@ -6,11 +6,29 @@ import io.micronaut.serde.annotation.Serdeable;
 @Introspected
 @Serdeable
 public class ClienteDTO {
+    private String login;
+    private String senha;
     private String nome;
     private String cpf;
     private String rg;
     private String endereco;
     private String profissao;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     public String getNome() {
         return nome;
