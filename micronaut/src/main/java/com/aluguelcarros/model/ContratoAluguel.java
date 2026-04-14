@@ -5,6 +5,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Serdeable
@@ -18,8 +19,6 @@ public class ContratoAluguel {
     private LocalDate dataFim;
     private String tipoContrato;
 
-    // @JsonIgnore: evita serializar a árvore inteira PedidoAluguel → Cliente → ...
-    // O frontend recebe o ID via getPedidoId()
     @JsonIgnore
     @OneToOne
     private PedidoAluguel pedido;
@@ -27,12 +26,9 @@ public class ContratoAluguel {
     @OneToOne(cascade = CascadeType.ALL)
     private ContratoCredito contratoCredito;
 
-    // @JsonIgnore: evita LazyInitializationException ao serializar fora da transação
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Automovel> automoveis;
-
-    // --- Getters e Setters ---
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -51,8 +47,24 @@ public class ContratoAluguel {
 
     // Expõe apenas o ID do pedido para o frontend (sem serializar o objeto inteiro)
     @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("pedidoId")
     public Long getPedidoId() {
         return pedido != null ? pedido.getId() : null;
+    }
+
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("agenciaNome")
+    public String getAgenciaNome() {
+        return (pedido != null && pedido.getAvaliador() != null) ? pedido.getAvaliador().getNome() : null;
+    }
+
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("carros")
+    public String getCarros() {
+        if (automoveis == null || automoveis.isEmpty()) return null;
+        return automoveis.stream()
+                .map(a -> a.getMarca() + " " + a.getModelo() + " (" + a.getPlaca() + ")")
+                .collect(Collectors.joining(", "));
     }
 
     public List<Automovel> getAutomoveis() { return automoveis; }

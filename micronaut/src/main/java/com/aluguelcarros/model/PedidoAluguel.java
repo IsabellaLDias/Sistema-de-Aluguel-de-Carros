@@ -24,8 +24,6 @@ public class PedidoAluguel {
     @JsonIgnore
     private Agente avaliador;
 
-    // @JsonIgnore: evita referência circular
-    // ContratoAluguel → PedidoAluguel → ContratoAluguel → ∞
     @JsonIgnore
     @OneToOne(mappedBy = "pedido")
     private ContratoAluguel contratoGerado;
@@ -48,7 +46,17 @@ public class PedidoAluguel {
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
+    public Agente getAvaliador() { return avaliador; }
+    public void setAvaliador(Agente avaliador) { this.avaliador = avaliador; }
+
     @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("avaliadorId")
+    public Long getAvaliadorId() {
+        return avaliador != null ? avaliador.getId() : null;
+    }
+
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty("clienteId")
     public Long getClienteId() {
         return cliente != null ? cliente.getId() : null;
     }
