@@ -9,6 +9,7 @@ import io.micronaut.serde.annotation.Serdeable;
 public class PedidoAluguelDTO {
 
     private Long clienteId;
+    private Long agenteId;
     private Integer prazoMeses;
     private Double valorPrevisto;
     private StatusAluguel status;
@@ -19,6 +20,14 @@ public class PedidoAluguelDTO {
 
     public void setClienteId(Long clienteId) {
         this.clienteId = clienteId;
+    }
+
+    public Long getAgenteId() {
+        return agenteId;
+    }
+
+    public void setAgenteId(Long agenteId) {
+        this.agenteId = agenteId;
     }
 
     public Integer getPrazoMeses() {

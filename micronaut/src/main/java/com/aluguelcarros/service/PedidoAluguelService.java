@@ -8,6 +8,8 @@ import com.aluguelcarros.dto.PedidoAluguelDTO;
 import com.aluguelcarros.exception.ResourceNotFoundException;
 import com.aluguelcarros.repository.ClienteRepository;
 import com.aluguelcarros.repository.PedidoAluguelRepository;
+import com.aluguelcarros.repository.AgenteRepository;
+import com.aluguelcarros.model.Agente;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +21,12 @@ public class PedidoAluguelService {
 
     private final PedidoAluguelRepository repository;
     private final ClienteRepository clienteRepository;
+    private final AgenteRepository agenteRepository;
 
-    public PedidoAluguelService(PedidoAluguelRepository repository, ClienteRepository clienteRepository) {
+    public PedidoAluguelService(PedidoAluguelRepository repository, ClienteRepository clienteRepository, AgenteRepository agenteRepository) {
         this.repository = repository;
         this.clienteRepository = clienteRepository;
+        this.agenteRepository = agenteRepository;
     }
 
     public PedidoAluguel criar(PedidoAluguelDTO dto) {
@@ -59,6 +63,11 @@ public class PedidoAluguelService {
             Cliente cliente = clienteRepository.findById(dto.getClienteId())
                     .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado para o pedido"));
             p.setCliente(cliente);
+        }
+        if (dto.getAgenteId() != null) {
+            Agente avaliador = agenteRepository.findById(dto.getAgenteId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Agente não encontrado"));
+            p.setAvaliador(avaliador);
         }
 
         return repository.save(p);
