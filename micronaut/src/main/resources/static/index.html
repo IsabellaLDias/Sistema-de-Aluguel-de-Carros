@@ -8,7 +8,9 @@
     <meta name="description" content="Sistema de aluguel de carros com análise financeira por agentes parceiros.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Exo+2:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Exo+2:ital,wght@1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -25,7 +27,8 @@
                     <p>Como você deseja se cadastrar?</p>
                 </div>
                 <div class="perfil-options">
-                    <button class="btn btn-secondary btn-full" id="btn-sou-cliente" onclick="mostrarCadastro('cliente')">
+                    <button class="btn btn-secondary btn-full" id="btn-sou-cliente"
+                        onclick="mostrarCadastro('cliente')">
                         Sou Cliente (CPF)
                     </button>
                     <button class="btn btn-secondary btn-full" id="btn-sou-agente" onclick="mostrarCadastro('agente')">
@@ -34,7 +37,8 @@
                 </div>
                 <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
                     Já tem uma conta? <a href="#" id="link-login" onclick="mostrarApenasLogin()"
-                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Clique aqui para entrar</a>
+                        style="color: var(--primary); font-weight: 600; text-decoration: none;">Clique aqui para
+                        entrar</a>
                 </p>
             </div>
 
@@ -54,14 +58,22 @@
                         <label for="regSenha">Senha</label>
                         <div class="input-password-wrap">
                             <input type="password" id="regSenha" placeholder="********" autocomplete="current-password">
-                            <button type="button" class="btn-eye" onclick="toggleSenha('regSenha', this)" aria-label="Mostrar senha">
+                            <button type="button" class="btn-eye" onclick="toggleSenha('regSenha', this)"
+                                aria-label="Mostrar senha">
                                 <!-- olho aberto -->
-                                <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
                                 </svg>
                                 <!-- olho fechado -->
-                                <svg class="eye-off hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+                                <svg class="eye-off hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
                                 </svg>
                             </button>
                         </div>
@@ -106,10 +118,11 @@
                     </div>
                 </div>
 
-                <button id="btn-acao-principal" class="btn btn-primary btn-full" onclick="executarAcaoPrincipal()">Cadastrar e Acessar</button>
+                <button id="btn-acao-principal" class="btn btn-primary btn-full"
+                    onclick="executarAcaoPrincipal()">Cadastrar e Acessar</button>
 
-                <button class="btn btn-secondary btn-full voltar" style="margin-top: 10px; border:none; background:none;"
-                    onclick="location.reload()">Voltar</button>
+                <button class="btn btn-secondary btn-full voltar"
+                    style="margin-top: 10px; border:none; background:none;" onclick="location.reload()">Voltar</button>
             </div>
         </div>
 
@@ -124,7 +137,6 @@
                     </p>
                 </div>
                 <nav class="dashboard-nav" id="dashboard-nav">
-                    <!-- Abas geradas pelo JS -->
                 </nav>
                 <div class="header-actions">
                     <button class="btn-logout" onclick="sairSistema()">Sair</button>
@@ -147,13 +159,15 @@
                                 <label for="valor">Valor Previsto (R$)</label>
                                 <input type="number" id="valor" placeholder="Ex: 25000.00" min="0" step="0.01">
                             </div>
-                            <button class="btn btn-primary btn-full" id="btn-criar-pedido" onclick="criarPedido()">Criar Pedido</button>
+                            <button class="btn btn-primary btn-full" id="btn-criar-pedido" onclick="criarPedido()">Criar
+                                Pedido</button>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
                                 <h2>Meus Pedidos</h2>
-                                <button class="btn btn-secondary btn-sm" onclick="listarPedidosCliente()">Atualizar</button>
+                                <button class="btn btn-secondary btn-sm"
+                                    onclick="listarPedidosCliente()">Atualizar</button>
                             </div>
                             <div id="lista-pedidos-cliente"></div>
                         </div>
@@ -165,7 +179,8 @@
                     <div class="card">
                         <div class="card-header">
                             <h2>Meus Contratos</h2>
-                            <button class="btn btn-secondary btn-sm" onclick="carregarContratosCliente()">Atualizar</button>
+                            <button class="btn btn-secondary btn-sm"
+                                onclick="carregarContratosCliente()">Atualizar</button>
                         </div>
                         <div id="lista-contratos-cliente"></div>
                     </div>
@@ -204,7 +219,8 @@
                         <!-- Rendimentos -->
                         <div class="rendimentos-section">
                             <div class="rendimentos-header">
-                                <h3>Rendimentos <span class="text-muted" style="font-size:0.8rem; font-weight:400;">(máx. 3)</span></h3>
+                                <h3>Rendimentos <span class="text-muted"
+                                        style="font-size:0.8rem; font-weight:400;">(máx. 3)</span></h3>
                             </div>
                             <div id="lista-rendimentos"></div>
                             <div id="form-novo-rendimento" class="rendimento-novo-form hidden">
@@ -215,20 +231,25 @@
                                     </div>
                                     <div class="form-group" style="margin:0;">
                                         <label>Rendimento (R$)</label>
-                                        <input type="number" id="novoRendimentoValor" placeholder="Ex: 5000.00" step="0.01">
+                                        <input type="number" id="novoRendimentoValor" placeholder="Ex: 5000.00"
+                                            step="0.01">
                                     </div>
                                 </div>
                                 <div class="rendimento-novo-actions">
-                                    <button class="btn btn-secondary btn-sm" onclick="cancelarNovoRendimento()">Cancelar</button>
-                                    <button class="btn btn-primary btn-sm" onclick="confirmarNovoRendimento()">Salvar</button>
+                                    <button class="btn btn-secondary btn-sm"
+                                        onclick="cancelarNovoRendimento()">Cancelar</button>
+                                    <button class="btn btn-primary btn-sm"
+                                        onclick="confirmarNovoRendimento()">Salvar</button>
                                 </div>
                             </div>
-                            <button id="btn-add-rendimento" class="btn btn-secondary btn-sm" style="margin-top:12px;" onclick="mostrarFormRendimento()">+ Adicionar Rendimento</button>
+                            <button id="btn-add-rendimento" class="btn btn-secondary btn-sm" style="margin-top:12px;"
+                                onclick="mostrarFormRendimento()">+ Adicionar Rendimento</button>
                         </div>
 
                         <div class="profile-actions">
                             <button class="btn btn-primary action-save" onclick="salvarPerfil()">Salvar Dados</button>
-                            <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha Conta</button>
+                            <button class="btn btn-danger action-delete" onclick="excluirConta()">Excluir Minha
+                                Conta</button>
                         </div>
                     </div>
                 </div>
@@ -271,7 +292,8 @@
                     <div class="card">
                         <div class="card-header">
                             <h2>Frota de Automóveis</h2>
-                            <button class="btn btn-primary btn-sm" onclick="abrirModalAutomovel()">Novo Automóvel</button>
+                            <button class="btn btn-primary btn-sm" onclick="abrirModalAutomovel()">Novo
+                                Automóvel</button>
                         </div>
                         <div id="lista-automoveis-agente"></div>
                     </div>
@@ -292,7 +314,10 @@
                             <input type="text" id="editAgenteCnpj" readonly style="opacity:0.7;">
                         </div>
                         <div class="profile-actions">
-                            <button class="btn btn-primary action-save" onclick="salvarPerfilAgente()">Salvar Dados</button>
+                            <button class="btn btn-primary action-save" onclick="salvarPerfilAgente()">Salvar
+                                Dados</button>
+                            <button class="btn btn-danger action-delete" onclick="excluirContaAgente()">Excluir Minha
+                                Conta</button>
                         </div>
                     </div>
                 </div>
@@ -302,12 +327,12 @@
         </div>
     </div>
 
-    <!-- Carrinho animado: faixa reservada no fim do conteúdo -->
     <div class="estrada" id="estrada-anim">
-        <img src="https://static.vecteezy.com/system/resources/thumbnails/039/213/331/small/side-view-gray-suv-car-free-png.png" class="carro-animado" alt="Carro animado">
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/039/213/331/small/side-view-gray-suv-car-free-png.png"
+            class="carro-animado" alt="Carro animado">
     </div>
 
-</div><!-- /container -->
+    </div><!-- /container -->
 
     <!-- ===================== MODAL: EDITAR PEDIDO ===================== -->
     <div id="modal-pedido" class="modal-overlay hidden">
@@ -380,13 +405,11 @@
     <div id="modal-contrato" class="modal-overlay hidden">
         <div class="modal-card modal-card-lg">
 
-            <!-- Header fixo -->
             <div class="modal-header">
                 <h3>Criar Contrato de Aluguel</h3>
                 <button class="modal-close" onclick="fecharModal('modal-contrato')">x</button>
             </div>
 
-            <!-- Corpo com scroll interno -->
             <div class="modal-body">
 
                 <!-- DADOS DO CONTRATANTE -->
@@ -427,7 +450,7 @@
                     <div id="contrato-veiculos-lista" class="veiculos-check-lista"></div>
                 </div>
 
-                <!-- CONTRATO DE CRÉDITO (somente tipo BANCO) -->
+                <!-- CONTRATO DE CRÉDITO (BANCO) -->
                 <div id="campos-credito" class="hidden">
                     <div class="secao-credito">
                         <p class="secao-credito-titulo">Contrato de Crédito (Banco concedente)</p>
@@ -451,7 +474,8 @@
             <!-- Footer fixo com botões -->
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="fecharModal('modal-contrato')">Cancelar</button>
-                <button class="btn btn-primary" id="btn-salvar-contrato" onclick="salvarContrato()">Criar Contrato</button>
+                <button class="btn btn-primary" id="btn-salvar-contrato" onclick="salvarContrato()">Criar
+                    Contrato</button>
             </div>
 
         </div>
@@ -464,7 +488,7 @@
             <p id="confirm-msg" class="confirm-msg"></p>
             <div class="confirm-actions">
                 <button id="confirm-cancel" class="btn btn-secondary btn-sm">Cancelar</button>
-                <button id="confirm-ok"     class="btn btn-danger    btn-sm">Confirmar</button>
+                <button id="confirm-ok" class="btn btn-danger    btn-sm">Confirmar</button>
             </div>
         </div>
     </div>
