@@ -1011,7 +1011,7 @@ select:focus {
 
 /* Rendimentos */
 .rendimentos-section {
-    background: var(--secondary-bg);
+    background: #e5e7eb;
     border-radius: var(--radius-md);
     padding: 20px;
     margin: 24px 0 0;

@@ -472,13 +472,15 @@ async function carregarContratosCliente() {
     const lista = document.getElementById("lista-contratos-cliente");
     lista.innerHTML = `<div class="loading">Carregando contratos...</div>`;
     try {
-        const [resPedidos, resContratos] = await Promise.all([
+        const [resPedidos, resContratos, resAgentes] = await Promise.all([
             fetch(API_PEDIDOS),
-            fetch(API_CONTRATOS)
+            fetch(API_CONTRATOS),
+            fetch(API_AGENTES).catch(() => null)
         ]);
 
         const todosPedidos = await resPedidos.json();
         const todosContratos = await resContratos.json();
+        const todosAgentes = resAgentes && resAgentes.ok ? await resAgentes.json() : [];
 
         const meusPedidos = todosPedidos.filter(p => {
             const cid = p.clienteId ?? p.cliente?.id;
@@ -494,7 +496,24 @@ async function carregarContratosCliente() {
             return;
         }
 
-        meusContratos.forEach(c => lista.appendChild(criarCardContrato(c)));
+        meusContratos.forEach(c => {
+            const p = todosPedidos.find(pedido => pedido.id === c.pedidoId);
+            if (p) {
+                if (p.cliente) {
+                    c.clienteId = p.cliente.id;
+                    c.clienteCpf = p.cliente.cpf;
+                } else if (p.clienteId) {
+                    c.clienteId = p.clienteId;
+                }
+                const agenteId = p.avaliadorId || p.avaliador?.id;
+                if (agenteId) {
+                    c.agenteId = agenteId;
+                    const agenteObj = todosAgentes.find(a => a.id === agenteId);
+                    if (agenteObj) c.agenteCnpj = agenteObj.cnpj;
+                }
+            }
+            lista.appendChild(criarCardContrato(c));
+        });
     } catch {
         lista.innerHTML = `<div class="empty-state error">Erro ao carregar contratos.</div>`;
     }
@@ -597,13 +616,14 @@ function criarCardPedidoAgente(p) {
     const status = (p.status || "PENDENTE").toUpperCase();
     const statusClass = status.toLowerCase();
     const cid = p.clienteId ?? p.cliente?.id ?? null;
+    const cpfVisual = p.cliente && p.cliente.cpf ? ` - CPF: ${p.cliente.cpf}` : "";
     const isPendente = status === "PENDENTE";
 
     div.innerHTML = `
         <div class="order-header">
             <div class="order-id">
                 Pedido #${p.id}
-                <span class="order-cliente-label">Cliente ID ${cid ?? "—"}</span>
+                <span class="order-cliente-label">Cliente ID ${cid ?? "—"}${cpfVisual}</span>
             </div>
             <div class="status-badge status-${statusClass}">${status}</div>
         </div>
@@ -708,7 +728,7 @@ async function salvarEdicaoPedido() {
 }
 
 // ========================
-// CONTRATOS (aba do agente)
+// CONTRATOS (agente)
 // ========================
 async function carregarContratos() {
     const elAprovados = document.getElementById("lista-pedidos-aprovados");
@@ -745,7 +765,16 @@ async function carregarContratos() {
         if (contratos.length === 0) {
             elContratos.innerHTML = `<div class="empty-state">Nenhum contrato criado ainda.</div>`;
         } else {
-            contratos.forEach(c => elContratos.appendChild(criarCardContrato(c)));
+            contratos.forEach(c => {
+                const p = pedidos.find(pedido => pedido.id === c.pedidoId);
+                if (p && p.cliente) {
+                    c.clienteId = p.cliente.id;
+                    c.clienteCpf = p.cliente.cpf;
+                } else if (p && p.clienteId) {
+                    c.clienteId = p.clienteId;
+                }
+                elContratos.appendChild(criarCardContrato(c));
+            });
         }
     } catch {
         elAprovados.innerHTML = `<div class="empty-state error">Erro ao carregar dados.</div>`;
@@ -757,9 +786,10 @@ function criarCardPedidoAguardandoContrato(p) {
     const div = document.createElement("div");
     div.className = "order-card";
     const cid = p.clienteId ?? p.cliente?.id;
+    const cpfVisual = p.cliente && p.cliente.cpf ? ` - CPF: ${p.cliente.cpf}` : "";
     div.innerHTML = `
         <div class="order-header">
-            <div class="order-id">Pedido #${p.id} <span class="order-cliente-label">Cliente ID ${cid ?? "—"}</span></div>
+            <div class="order-id">Pedido #${p.id} <span class="order-cliente-label">Cliente ID ${cid ?? "—"}${cpfVisual}</span></div>
             <div class="status-badge status-concluido">APROVADO</div>
         </div>
         <div class="order-grid">
@@ -782,9 +812,22 @@ function criarCardContrato(c) {
         BANCO: "Propriedade do Banco"
     }[c.tipoContrato] || c.tipoContrato || "—";
 
+    let authStr = "";
+    if (usuarioAtual.tipo === "cliente") {
+        if (c.agenteId) {
+            const cnpjStr = c.agenteCnpj ? ` - CNPJ: ${c.agenteCnpj}` : "";
+            authStr = ` <span class="order-cliente-label">Agente ID ${c.agenteId}${cnpjStr}</span>`;
+        }
+    } else {
+        if (c.clienteId) {
+            const cpfStr = c.clienteCpf ? ` - CPF: ${c.clienteCpf}` : "";
+            authStr = ` <span class="order-cliente-label">Cliente ID ${c.clienteId}${cpfStr}</span>`;
+        }
+    }
+
     div.innerHTML = `
         <div class="order-header">
-            <div class="order-id">Contrato #${c.id}</div>
+            <div class="order-id">Contrato #${c.id}${authStr}</div>
             <div class="status-badge status-ativo">${tipoLabel}</div>
         </div>
         <div class="order-grid">
@@ -1223,6 +1266,19 @@ async function salvarPerfilAgente() {
     } catch {
         showToast("Erro ao salvar.", "erro");
     }
+}
+
+async function excluirContaAgente() {
+    confirmar("Tem certeza que deseja excluir sua conta de agente? Esta ação é irreversível.", async (ok) => {
+        if (!ok) return;
+        try {
+            await fetch(`${API_AGENTES}/${usuarioAtual.id}`, { method: "DELETE" });
+            showToast("Conta excluída.");
+            setTimeout(() => sairSistema(), 1500);
+        } catch {
+            showToast("Erro ao excluir conta.", "erro");
+        }
+    });
 }
 
 // ========================
