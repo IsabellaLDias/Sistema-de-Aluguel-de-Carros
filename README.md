@@ -157,7 +157,7 @@ A organização do projeto segue a arquitetura do Micronaut, onde a API e o Fron
 │   ├── gradle/                       # ⚙️ Wrapper do Gradle
 │   ├── src/                          # 📂 Código-fonte da aplicação
 │   │   ├── main/
-│   │   │   ├── java/com/aluguelcarros/ # ☕ Pacotes Java (Back-end)
+│   │   │   ├── java/com/micronaut/ # ☕ Pacotes Java (Back-end)
 │   │   │   │   ├── config/           # ⚙️ Configurações
 │   │   │   │   ├── controller/       # 🛣️ Controladores REST
 │   │   │   │   ├── dto/              # 📦 Objetos de Transferência (DTOs)
