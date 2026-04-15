@@ -19,6 +19,8 @@ let usuarioAtual = JSON.parse(localStorage.getItem("usuarioAtual")) || {
     tipo: null,
     cnpj: null
 };
+let veiculoNovoPedidoId = null;
+let veiculoEdicaoPedidoId = null;
 
 // ========================
 // TOAST
@@ -372,7 +374,7 @@ function sairSistema() {
 // NAVEGAÇÃO
 // ========================
 const abasCliente = [
-    { id: "pedidos", label: "Pedidos", init: listarPedidosCliente },
+    { id: "pedidos", label: "Pedidos", init: () => { listarPedidosCliente(); carregarVeiculosSelecao("lista-veiculos-selecao", "novo"); } },
     { id: "contratos", label: "Meus Contratos", init: carregarContratosCliente },
     { id: "perfil", label: "Meu Perfil", init: carregarPerfilCliente }
 ];
@@ -422,6 +424,7 @@ async function criarPedido() {
     const prazo = document.getElementById("prazo").value;
     const valor = document.getElementById("valor").value;
     if (!prazo || !valor) { showToast("Preencha prazo e valor!", "erro"); return; }
+    if (!veiculoNovoPedidoId) { showToast("Por favor, selecione um veículo!", "erro"); return; }
 
     const btn = document.getElementById("btn-criar-pedido");
     btn.disabled = true; btn.innerText = "Criando...";
@@ -430,17 +433,79 @@ async function criarPedido() {
         const res = await fetch(API_PEDIDOS, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ clienteId: usuarioAtual.id, prazoMeses: Number(prazo), valorPrevisto: Number(valor) })
+            body: JSON.stringify({
+                clienteId: usuarioAtual.id,
+                prazoMeses: Number(prazo),
+                valorPrevisto: Number(valor),
+                automovelId: veiculoNovoPedidoId
+            })
         });
         if (!res.ok) throw new Error();
         document.getElementById("prazo").value = "";
         document.getElementById("valor").value = "";
+        veiculoNovoPedidoId = null;
+        carregarVeiculosSelecao("lista-veiculos-selecao", "novo"); // Resetar
         showToast("Pedido criado com sucesso!");
         await listarPedidosCliente();
     } catch {
         showToast("Erro ao criar pedido.", "erro");
     } finally {
         btn.disabled = false; btn.innerText = "Criar Pedido";
+    }
+}
+
+async function carregarVeiculosSelecao(containerId, context) {
+    const grid = document.getElementById(containerId);
+    if (!grid) return;
+    grid.innerHTML = `<div class="loading">Carregando veículos...</div>`;
+
+    try {
+        const res = await fetch(API_AUTOMOVEIS);
+        const automoveis = await res.json();
+        grid.innerHTML = "";
+
+        const selectedId = context === "novo" ? veiculoNovoPedidoId : veiculoEdicaoPedidoId;
+
+        automoveis.forEach(a => {
+            const card = document.createElement("div");
+            card.className = "selectable-car-card";
+            card.id = `select-car-${context}-${a.id}`;
+            if (selectedId === a.id) card.classList.add("selected");
+
+            const base64 = converterParaBase64(a.imagem);
+            const imgSrc = base64
+                ? `data:image/png;base64,${base64}`
+                : "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80";
+
+            card.innerHTML = `
+                <img src="${imgSrc}" class="car-image-sm" alt="${a.marca}">
+                <div class="car-name-sm">${a.marca} ${a.modelo}</div>
+                <div class="car-year-sm">${a.ano || "—"}</div>
+            `;
+
+            card.onclick = () => selecionarVeiculo(a.id, context);
+            grid.appendChild(card);
+        });
+    } catch {
+        grid.innerHTML = `<div class="empty-state error">Erro ao carregar veículos.</div>`;
+    }
+}
+
+function selecionarVeiculo(id, context) {
+    const isNovo = context === "novo";
+    const currentId = isNovo ? veiculoNovoPedidoId : veiculoEdicaoPedidoId;
+
+    if (currentId) {
+        const oldCard = document.getElementById(`select-car-${context}-${currentId}`);
+        if (oldCard) oldCard.classList.remove("selected");
+    }
+
+    if (currentId === id) {
+        if (isNovo) veiculoNovoPedidoId = null; else veiculoEdicaoPedidoId = null;
+    } else {
+        if (isNovo) veiculoNovoPedidoId = id; else veiculoEdicaoPedidoId = id;
+        const newCard = document.getElementById(`select-car-${context}-${id}`);
+        if (newCard) newCard.classList.add("selected");
     }
 }
 
@@ -542,6 +607,10 @@ function criarCardPedidoCliente(p) {
                 <span class="field-value">${formatarMoeda(p.valorPrevisto)}</span>
             </div>
             <div class="order-field">
+                <span class="field-label">Veículo</span>
+                <span class="field-value">${p.automovel ? p.automovel.marca + ' ' + p.automovel.modelo : "Não selecionado"}</span>
+            </div>
+            <div class="order-field">
                 <span class="field-label">Data</span>
                 <span class="field-value">${formatarData(p.dataPedido)}</span>
             </div>
@@ -549,7 +618,7 @@ function criarCardPedidoCliente(p) {
         ${isPendente ? `
         <div class="order-actions">
             <button class="btn btn-secondary btn-sm"
-                onclick="abrirEdicaoPedido(${p.id}, ${p.prazoMeses}, ${p.valorPrevisto}, ${cid}, '${status}')">
+                onclick="abrirEdicaoPedido(${p.id}, ${p.prazoMeses}, ${p.valorPrevisto}, ${cid}, '${status}', ${p.automovel ? p.automovel.id : 'null'})">
                 Editar
             </button>
             <button class="btn btn-danger btn-sm"
@@ -629,6 +698,10 @@ function criarCardPedidoAgente(p) {
         </div>
         <div class="order-grid">
             <div class="order-field">
+                <span class="field-label">Veículo</span>
+                <span class="field-value">${p.automovel ? p.automovel.marca + ' ' + p.automovel.modelo : "Não selecionado"}</span>
+            </div>
+            <div class="order-field">
                 <span class="field-label">Prazo</span>
                 <span class="field-value">${p.prazoMeses} meses</span>
             </div>
@@ -652,7 +725,7 @@ function criarCardPedidoAgente(p) {
                 Reprovar
             </button>
             <button class="btn btn-secondary btn-sm"
-                onclick="abrirEdicaoPedido(${p.id}, ${p.prazoMeses}, ${p.valorPrevisto}, ${cid ?? 'null'}, '${status}')">
+                onclick="abrirEdicaoPedido(${p.id}, ${p.prazoMeses}, ${p.valorPrevisto}, ${cid ?? 'null'}, '${status}', ${p.automovel ? p.automovel.id : 'null'})">
                 Modificar
             </button>
         </div>` : ""}
@@ -688,12 +761,16 @@ async function avaliarPedido(id, prazoMeses, valorPrevisto, clienteId, novoStatu
 // ========================
 // EDITAR PEDIDO
 // ========================
-function abrirEdicaoPedido(id, prazo, valor, clienteId, status) {
+function abrirEdicaoPedido(id, prazo, valor, clienteId, status, autoId) {
     document.getElementById("editPedidoId").value = id;
     document.getElementById("editPedidoClienteId").value = clienteId;
     document.getElementById("editPedidoStatus").value = status || "PENDENTE";
     document.getElementById("editPrazo").value = prazo;
     document.getElementById("editValor").value = valor;
+
+    veiculoEdicaoPedidoId = autoId;
+    carregarVeiculosSelecao("lista-veiculos-edicao", "edicao");
+
     abrirModal("modal-pedido");
 }
 
@@ -705,6 +782,7 @@ async function salvarEdicaoPedido() {
     const valor = document.getElementById("editValor").value;
 
     if (!prazo || !valor) { showToast("Preencha todos os campos!", "erro"); return; }
+    if (!veiculoEdicaoPedidoId) { showToast("Por favor, selecione um veículo!", "erro"); return; }
 
     try {
         const res = await fetch(`${API_PEDIDOS}/${id}`, {
@@ -714,7 +792,8 @@ async function salvarEdicaoPedido() {
                 clienteId: clienteId ? Number(clienteId) : null,
                 prazoMeses: Number(prazo),
                 valorPrevisto: Number(valor),
-                status: status || "PENDENTE"
+                status: status || "PENDENTE",
+                automovelId: veiculoEdicaoPedidoId
             })
         });
         if (!res.ok) throw new Error();
@@ -1007,12 +1086,85 @@ async function salvarContrato() {
 // AUTOMÓVEIS
 // ========================
 function abrirModalAutomovel() {
-    ["autoMarca", "autoModelo", "autoAno", "autoPlaca", "autoMatricula"]
-        .forEach(id => document.getElementById(id).value = "");
+    document.getElementById("modal-automovel-titulo").innerText = "Novo Automóvel";
+    document.getElementById("btn-salvar-automovel").innerText = "Cadastrar";
+    document.getElementById("autoId").value = "";
+
+    ["autoMarca", "autoModelo", "autoAno", "autoPlaca", "autoMatricula", "autoImagem"]
+        .forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.type === 'file') el.value = '';
+                else el.value = '';
+            }
+        });
+    document.getElementById("preview-container").classList.add("hidden");
+    document.getElementById("auto-preview").src = "";
     abrirModal("modal-automovel");
 }
 
+function converterParaBase64(imagem) {
+    if (!imagem) return null;
+    if (typeof imagem === 'string') return imagem;
+    if (Array.isArray(imagem)) {
+        let binary = '';
+        const bytes = new Uint8Array(imagem);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+    }
+    return null;
+}
+
+async function abrirEdicaoAutomovel(id) {
+    try {
+        const res = await fetch(`${API_AUTOMOVEIS}/${id}`);
+        const a = await res.json();
+
+        document.getElementById("modal-automovel-titulo").innerText = "Editar Automóvel";
+        document.getElementById("btn-salvar-automovel").innerText = "Salvar Alterações";
+        document.getElementById("autoId").value = id;
+        document.getElementById("autoImagem").value = "";
+
+        document.getElementById("autoMarca").value = a.marca || "";
+        document.getElementById("autoModelo").value = a.modelo || "";
+        document.getElementById("autoAno").value = a.ano || "";
+        document.getElementById("autoPlaca").value = a.placa || "";
+        document.getElementById("autoMatricula").value = a.matricula || "";
+
+        const preview = document.getElementById("auto-preview");
+        const container = document.getElementById("preview-container");
+        if (a.imagem) {
+            const base64 = converterParaBase64(a.imagem);
+            preview.src = `data:image/png;base64,${base64}`;
+            container.classList.remove("hidden");
+        } else {
+            preview.src = "";
+            container.classList.add("hidden");
+        }
+
+        abrirModal("modal-automovel");
+    } catch {
+        showToast("Erro ao carregar dados do automóvel.", "erro");
+    }
+}
+
+function previewImagem(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+        const preview = document.getElementById('auto-preview');
+        preview.src = reader.result;
+        document.getElementById('preview-container').classList.remove('hidden');
+    }
+    if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+    }
+}
+
 async function salvarAutomovel() {
+    const id = document.getElementById("autoId").value;
     const marca = document.getElementById("autoMarca").value.trim();
     const modelo = document.getElementById("autoModelo").value.trim();
     const ano = document.getElementById("autoAno").value;
@@ -1027,19 +1179,38 @@ async function salvarAutomovel() {
     btn.disabled = true; btn.innerText = "Salvando...";
 
     try {
-        const res = await fetch(API_AUTOMOVEIS, {
-            method: "POST",
+        const fileInput = document.getElementById("autoImagem");
+        let imagem = null;
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            imagem = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        const url = id ? `${API_AUTOMOVEIS}/${id}` : API_AUTOMOVEIS;
+        const method = id ? "PUT" : "POST";
+
+        const res = await fetch(url, {
+            method: method,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ marca, modelo, ano: Number(ano), placa, matricula })
+            body: JSON.stringify({ marca, modelo, ano: Number(ano), placa, matricula, imagemBase64: imagem })
         });
-        if (!res.ok) throw new Error();
-        showToast("Automóvel cadastrado!");
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(errorText || "Erro no servidor (500)");
+        }
+        showToast(id ? "Automóvel atualizado!" : "Automóvel cadastrado!");
         fecharModal("modal-automovel");
         await carregarAutomoveis();
-    } catch {
-        showToast("Erro ao cadastrar automóvel.", "erro");
+    } catch (e) {
+        console.error("Erro ao salvar automóvel:", e);
+        showToast("Erro ao salvar automóvel: " + (e.message || "Erro desconhecido"), "erro");
     } finally {
-        btn.disabled = false; btn.innerText = "Cadastrar";
+        btn.disabled = false; btn.innerText = id ? "Salvar Alterações" : "Cadastrar";
     }
 }
 
@@ -1069,16 +1240,28 @@ async function carregarAutomoveis() {
 function criarCardAutomovel(a) {
     const card = document.createElement("div");
     card.className = "automovel-card";
+
+    const base64 = converterParaBase64(a.imagem);
+    const imgSrc = base64
+        ? `data:image/png;base64,${base64}`
+        : "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=400&q=80";
+
     card.innerHTML = `
-        <div class="automovel-info">
-            <div class="automovel-nome">${a.marca} ${a.modelo}</div>
-            <div class="automovel-detalhes">
-                <span>${a.ano || "—"}</span>
-                <span class="placa-badge">${a.placa || "—"}</span>
-                ${a.matricula ? `<span>Mat: ${a.matricula}</span>` : ""}
+        <img src="${imgSrc}" alt="${a.marca} ${a.modelo}" class="automovel-img">
+        <div class="automovel-card-content">
+            <div class="automovel-info">
+                <div class="automovel-nome">${a.marca} ${a.modelo}</div>
+                <div class="automovel-detalhes">
+                    <span>${a.ano || "—"}</span>
+                    <span class="placa-badge">${a.placa || "—"}</span>
+                    ${a.matricula ? `<span>Mat: ${a.matricula}</span>` : ""}
+                </div>
+            </div>
+            <div class="order-actions" style="border:none; margin-top:10px; padding-top:0;">
+                <button class="btn btn-secondary btn-sm" onclick="abrirEdicaoAutomovel(${a.id})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="deletarAutomovel(${a.id})">Remover</button>
             </div>
         </div>
-        <button class="btn btn-danger btn-sm" onclick="deletarAutomovel(${a.id})">Remover</button>
     `;
     return card;
 }

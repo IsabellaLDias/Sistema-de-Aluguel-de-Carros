@@ -15,6 +15,10 @@ public class Automovel {
     private String marca;
     private String modelo;
     private String placa;
+    
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] imagem;
 
     @ManyToOne
     private Usuario proprietario;
@@ -40,4 +44,7 @@ public class Automovel {
 
     public Usuario getProprietario() { return proprietario; }
     public void setProprietario(Usuario proprietario) { this.proprietario = proprietario; }
+
+    public byte[] getImagem() { return imagem; }
+    public void setImagem(byte[] imagem) { this.imagem = imagem; }
 }
