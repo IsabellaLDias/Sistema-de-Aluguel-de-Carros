@@ -1,5 +1,6 @@
 package com.aluguelcarros.controller;
 
+import com.aluguelcarros.dto.AutomovelDTO;
 import com.aluguelcarros.model.Automovel;
 import com.aluguelcarros.service.AutomovelService;
 import io.micronaut.http.HttpResponse;
@@ -32,22 +33,15 @@ public class AutomovelController {
     }
 
     @Post
-    public HttpResponse<Automovel> criar(@Body Automovel automovel) {
-        Automovel novo = automovelService.salvar(automovel);
-        return HttpResponse.created(novo);
+    public HttpResponse<Automovel> criar(@Body AutomovelDTO dto) {
+        return HttpResponse.created(automovelService.criar(dto));
     }
 
     @Put("/{id}")
-    public HttpResponse<Automovel> atualizar(@PathVariable Long id, @Body Automovel automovel) {
-        return automovelService.buscarPorId(id).map(existente -> {
-            existente.setMatricula(automovel.getMatricula());
-            existente.setAno(automovel.getAno());
-            existente.setMarca(automovel.getMarca());
-            existente.setModelo(automovel.getModelo());
-            existente.setPlaca(automovel.getPlaca());
-            existente.setProprietario(automovel.getProprietario());
-            return HttpResponse.ok(automovelService.salvar(existente));
-        }).orElse(HttpResponse.notFound());
+    public HttpResponse<Automovel> atualizar(@PathVariable Long id, @Body AutomovelDTO dto) {
+        return automovelService.atualizar(id, dto)
+                .map(HttpResponse::ok)
+                .orElse(HttpResponse.notFound());
     }
 
     @Delete("/{id}")

@@ -13,6 +13,7 @@ public class PedidoAluguelDTO {
     private Integer prazoMeses;
     private Double valorPrevisto;
     private StatusAluguel status;
+    private Long automovelId;
 
     public Long getClienteId() {
         return clienteId;
@@ -52,5 +53,13 @@ public class PedidoAluguelDTO {
 
     public void setStatus(StatusAluguel status) {
         this.status = status;
+    }
+
+    public Long getAutomovelId() {
+        return automovelId;
+    }
+
+    public void setAutomovelId(Long automovelId) {
+        this.automovelId = automovelId;
     }
 }

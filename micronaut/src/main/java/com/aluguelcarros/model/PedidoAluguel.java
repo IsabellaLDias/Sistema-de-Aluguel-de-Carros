@@ -21,6 +21,9 @@ public class PedidoAluguel {
     private Cliente cliente;
 
     @ManyToOne
+    private Automovel automovel;
+
+    @ManyToOne
     @JsonIgnore
     private Agente avaliador;
 
@@ -45,6 +48,9 @@ public class PedidoAluguel {
 
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
+
+    public Automovel getAutomovel() { return automovel; }
+    public void setAutomovel(Automovel automovel) { this.automovel = automovel; }
 
     public Agente getAvaliador() { return avaliador; }
     public void setAvaliador(Agente avaliador) { this.avaliador = avaliador; }

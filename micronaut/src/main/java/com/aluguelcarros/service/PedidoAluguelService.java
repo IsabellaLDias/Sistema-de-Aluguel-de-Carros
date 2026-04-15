@@ -4,12 +4,14 @@ import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import com.aluguelcarros.model.Cliente;
 import com.aluguelcarros.model.PedidoAluguel;
+import com.aluguelcarros.model.Automovel;
+import com.aluguelcarros.model.Agente;
 import com.aluguelcarros.dto.PedidoAluguelDTO;
 import com.aluguelcarros.exception.ResourceNotFoundException;
 import com.aluguelcarros.repository.ClienteRepository;
 import com.aluguelcarros.repository.PedidoAluguelRepository;
 import com.aluguelcarros.repository.AgenteRepository;
-import com.aluguelcarros.model.Agente;
+import com.aluguelcarros.repository.AutomovelRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,11 +24,16 @@ public class PedidoAluguelService {
     private final PedidoAluguelRepository repository;
     private final ClienteRepository clienteRepository;
     private final AgenteRepository agenteRepository;
+    private final AutomovelRepository automovelRepository;
 
-    public PedidoAluguelService(PedidoAluguelRepository repository, ClienteRepository clienteRepository, AgenteRepository agenteRepository) {
+    public PedidoAluguelService(PedidoAluguelRepository repository, 
+                               ClienteRepository clienteRepository, 
+                               AgenteRepository agenteRepository,
+                               AutomovelRepository automovelRepository) {
         this.repository = repository;
         this.clienteRepository = clienteRepository;
         this.agenteRepository = agenteRepository;
+        this.automovelRepository = automovelRepository;
     }
 
     public PedidoAluguel criar(PedidoAluguelDTO dto) {
@@ -39,6 +46,13 @@ public class PedidoAluguelService {
         p.setDataPedido(LocalDate.now());
         p.setStatus("PENDENTE");
         p.setCliente(cliente);
+
+        if (dto.getAutomovelId() != null) {
+            Automovel auto = automovelRepository.findById(dto.getAutomovelId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Automóvel não encontrado"));
+            p.setAutomovel(auto);
+        }
+
         return repository.save(p);
     }
 
@@ -54,8 +68,9 @@ public class PedidoAluguelService {
     public PedidoAluguel atualizar(Long id, PedidoAluguelDTO dto) {
         PedidoAluguel p = buscarPorId(id);
 
-        p.setPrazoMeses(dto.getPrazoMeses());
-        p.setValorPrevisto(dto.getValorPrevisto());
+        if (dto.getPrazoMeses() != null) p.setPrazoMeses(dto.getPrazoMeses());
+        if (dto.getValorPrevisto() != null) p.setValorPrevisto(dto.getValorPrevisto());
+        
         if (dto.getStatus() != null) {
             p.setStatus(String.valueOf(dto.getStatus()));
         }
@@ -68,6 +83,11 @@ public class PedidoAluguelService {
             Agente avaliador = agenteRepository.findById(dto.getAgenteId())
                     .orElseThrow(() -> new ResourceNotFoundException("Agente não encontrado"));
             p.setAvaliador(avaliador);
+        }
+        if (dto.getAutomovelId() != null) {
+            Automovel auto = automovelRepository.findById(dto.getAutomovelId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Automóvel não encontrado"));
+            p.setAutomovel(auto);
         }
 
         return repository.save(p);

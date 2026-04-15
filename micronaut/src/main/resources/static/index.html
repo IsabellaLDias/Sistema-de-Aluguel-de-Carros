@@ -159,6 +159,12 @@
                                 <label for="valor">Valor Previsto (R$)</label>
                                 <input type="number" id="valor" placeholder="Ex: 25000.00" min="0" step="0.01">
                             </div>
+                            <div class="form-group">
+                                <label>Selecione o Veículo</label>
+                                <div id="lista-veiculos-selecao" class="veiculos-selecao-grid">
+                                    <!-- Cards de veículos serão inseridos aqui via JS -->
+                                </div>
+                            </div>
                             <button class="btn btn-primary btn-full" id="btn-criar-pedido" onclick="criarPedido()">Criar
                                 Pedido</button>
                         </div>
@@ -341,7 +347,7 @@
                 <h3>Editar Pedido</h3>
                 <button class="modal-close" onclick="fecharModal('modal-pedido')">x</button>
             </div>
-            <div class="modal-simple-body">
+            <div class="modal-body">
                 <div class="form-group">
                     <label for="editPrazo">Prazo (meses)</label>
                     <input type="number" id="editPrazo" min="1" max="120">
@@ -349,6 +355,12 @@
                 <div class="form-group">
                     <label for="editValor">Valor Previsto (R$)</label>
                     <input type="number" id="editValor" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Selecione o Veículo</label>
+                    <div id="lista-veiculos-edicao" class="veiculos-selecao-grid">
+                        <!-- Cards de veículos serão inseridos aqui via JS -->
+                    </div>
                 </div>
                 <input type="hidden" id="editPedidoId">
                 <input type="hidden" id="editPedidoClienteId">
@@ -365,10 +377,11 @@
     <div id="modal-automovel" class="modal-overlay hidden">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Novo Automóvel</h3>
+                <h3 id="modal-automovel-titulo">Novo Automóvel</h3>
                 <button class="modal-close" onclick="fecharModal('modal-automovel')">x</button>
             </div>
-            <div class="modal-simple-body">
+            <div class="modal-body">
+                <input type="hidden" id="autoId">
                 <div class="form-group row-2">
                     <div class="form-group">
                         <label for="autoMarca">Marca</label>
@@ -392,6 +405,15 @@
                 <div class="form-group">
                     <label for="autoMatricula">Matrícula</label>
                     <input type="text" id="autoMatricula" placeholder="Número de matrícula">
+                </div>
+                <div class="form-group">
+                    <label for="autoImagem">Imagem do Veículo</label>
+                    <div class="upload-container">
+                        <input type="file" id="autoImagem" accept="image/*" onchange="previewImagem(event)">
+                        <div id="preview-container" class="preview-container hidden">
+                            <img id="auto-preview" src="" alt="Preview">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-actions">

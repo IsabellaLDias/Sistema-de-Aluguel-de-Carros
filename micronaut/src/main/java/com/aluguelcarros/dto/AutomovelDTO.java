@@ -1,10 +1,15 @@
 package com.aluguelcarros.dto;
 
+import io.micronaut.serde.annotation.Serdeable;
+
+@Serdeable
 public class AutomovelDTO {
     private String marca;
     private String modelo;
     private Integer ano;
     private String placa;
+    private String matricula;
+    private String imagemBase64;
 
     public String getMarca() {
         return marca;
@@ -36,5 +41,21 @@ public class AutomovelDTO {
 
     public void setPlaca(String placa) {
         this.placa = placa;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getImagemBase64() {
+        return imagemBase64;
+    }
+
+    public void setImagemBase64(String imagemBase64) {
+        this.imagemBase64 = imagemBase64;
     }
 }
